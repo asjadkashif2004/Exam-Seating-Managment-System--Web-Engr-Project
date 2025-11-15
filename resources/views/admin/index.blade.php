@@ -4,257 +4,389 @@
 
 @push('head')
 <style>
-  .page-title{font-weight:800;letter-spacing:-.02em;color:#0f172a}
-  .card{border:1px solid #eef2f7;box-shadow:0 6px 18px rgba(16,24,40,.04)}
-  .badge-soft{background:#eef7ff;color:#0b5ed7;border:1px solid #e1efff;font-weight:600}
-  .table thead th{background:#f8fbff;font-weight:700;border-bottom:1px solid #e9eef5}
-  .btn-wow{transition:transform .15s ease, box-shadow .15s ease}
-  .btn-wow:hover{transform:translateY(-1px);box-shadow:0 10px 20px rgba(0,0,0,.06)}
-  .form-mini .form-control,.form-mini .form-select{height:42px}
+
+/* PAGE BACKGROUND */
+body {
+    background: #f5f7fb;
+}
+
+/* Page Title */
+.page-title {
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: #0f172a;
+}
+
+/* Premium Card Look */
+.card {
+    border: none;
+    border-radius: 16px;
+    background: #ffffffd9;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 8px 28px rgba(0,0,0,0.08);
+    transition: all 0.25s ease;
+}
+.card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.14);
+}
+
+/* Soft Badge */
+.badge-soft {
+    background: #dbeafe;
+    color: #1e40af;
+    padding: 6px 14px;
+    border-radius: 16px;
+    font-weight: 600;
+}
+
+/* Buttons */
+.btn-wow {
+    transition: 0.2s ease-in-out;
+    border-radius: 10px;
+    padding: 8px 18px;
+    font-weight: 600;
+}
+.btn-wow:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(37, 99, 235, 0.4);
+}
+
+/* Stylish Table */
+.stylish-table thead th {
+    background: #eef3fa;
+    font-weight: 700;
+    color: #1e293b;
+    border-bottom: 2px solid #e3e8ef;
+    padding: 12px;
+}
+
+.stylish-table tbody tr {
+    background: #ffffffc0;
+    transition: 0.18s ease-in-out;
+}
+.stylish-table tbody tr:hover {
+    background: #f0f4ff !important;
+    transform: scale(1.005);
+}
+
+/* Action Buttons */
+.action-btn {
+    width: 36px; height: 36px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 10px;
+    background: #ffffff;
+    transition: .2s;
+}
+.action-btn:hover {
+    background: #e8f0ff;
+    transform: translateY(-2px);
+}
+
+/* Inline Edit Row */
+.inline-edit-row {
+    background: #f8faff !important;
+    border-left: 4px solid #3b82f6;
+    animation: fadeIn .3s ease;
+}
+
+/* Fade Animation */
+.fade-in {
+    animation: fadeIn .45s ease-in-out;
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
 </style>
 @endpush
 
+
+
 @section('content')
-<div class="container py-4">
-  {{-- Header --}}
-  <div class="d-flex align-items-center justify-content-between mb-3">
-    <div>
-      <h1 class="page-title mb-1">Admin Dashboard</h1>
-      <div class="small text-muted">Manage Departments, Rooms, and Students from one place.</div>
-    </div>
-    <span class="badge badge-soft rounded-pill">Role: Admin</span>
-  </div>
+<div class="container py-4 fade-in">
 
-  {{-- Flash --}}
-  @if (session('ok'))
-    <div class="alert alert-success">{{ session('ok') }}</div>
-  @endif
-  @if (session('success'))
-    <div class="alert alert-success">{{ session('success') }}</div>
-  @endif
-  @if (session('error'))
-    <div class="alert alert-danger">{{ session('error') }}</div>
-  @endif
-
-  <div class="row g-4">
-    {{-- Quick Create: Department --}}
-    <div class="col-lg-4">
-      <div class="card h-100">
-        <div class="card-body">
-          <h5 class="mb-3">Add Department</h5>
-          <form class="form-mini" method="POST" action="{{ route('admin.departments.store') }}">
-            @csrf
-            <div class="mb-2">
-              <input type="text" name="name" class="form-control" placeholder="e.g., Computer Science" required>
-              @error('name') <small class="text-danger">{{ $message }}</small> @enderror
-            </div>
-             <button class="btn btn-primary btn-wow">Add Department</button>
-          </form>
-
-          <hr class="my-3">
-          <div class="small text-muted mb-2">Departments</div>
-          <ul class="list-group">
-            @forelse($departments as $dept)
-              <li class="list-group-item d-flex justify-content-between align-items-center">
-                {{ $dept->name }} <span class="text-muted">({{ $dept->code }})</span>
-                <form method="POST" action="{{ route('admin.departments.destroy', $dept) }}"
-                      onsubmit="return confirm('Delete department?')">
-                  @csrf @method('DELETE')
-                  <button class="btn btn-sm btn-outline-danger">Delete</button>
-                </form>
-              </li>
-            @empty
-              <li class="list-group-item">No departments yet.</li>
-            @endforelse
-          </ul>
+    {{-- HEADER --}}
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="page-title mb-1">Admin Dashboard</h1>
+            <div class="small text-muted">Manage Departments, Rooms & Students efficiently.</div>
         </div>
-      </div>
+        <span class="badge badge-soft">Role: Admin</span>
     </div>
 
-    {{-- Quick Create: Room --}}
-    <div class="col-lg-4">
-      <div class="card h-100">
-        <div class="card-body">
-          <h5 class="mb-3">Add Room</h5>
-          <form class="form-mini" method="POST" action="{{ route('admin.rooms.store') }}">
-            @csrf
-            <div class="mb-2">
-              <select name="department_id" class="form-select" required>
-                <option value="" hidden>Department</option>
-                @foreach($departments as $d)
-                  <option value="{{ $d->id }}">{{ $d->name }}</option>
-                @endforeach
-              </select>
-              @error('department_id') <small class="text-danger">{{ $message }}</small> @enderror
-            </div>
-            <div class="mb-2">
-              <input type="text" name="room_no" class="form-control" placeholder="Room No (e.g., A-101)" required>
-              @error('room_no') <small class="text-danger">{{ $message }}</small> @enderror
-            </div>
-            <div class="mb-2">
-              <input type="number" name="capacity" class="form-control" placeholder="Capacity" min="1" required>
-              @error('capacity') <small class="text-danger">{{ $message }}</small> @enderror
-            </div>
-            <div class="mb-2">
-              <input type="text" name="invigilator" class="form-control" placeholder="Invigilator (optional)">
-              @error('invigilator') <small class="text-danger">{{ $message }}</small> @enderror
-            </div>
-            <button class="btn btn-primary btn-wow">Add Room</button>
-          </form>
 
-          <hr class="my-3">
-          <div class="small text-muted mb-2">Rooms</div>
-          <ul class="list-group">
-            @forelse($rooms as $room)
-              <li class="list-group-item d-flex justify-content-between align-items-center">
-                <span>
-                  {{ $room->room_no }}
-                  <span class="text-muted">· cap {{ $room->capacity }}</span>
-                  @if($room->invigilator) <span class="text-muted">· {{ $room->invigilator }}</span> @endif
-                </span>
-                <div class="d-flex gap-1 flex-wrap">
-                  {{-- Inline edit --}}
-                  <form method="POST" action="{{ route('admin.rooms.update', $room) }}" class="d-flex gap-1 flex-wrap">
-                    @csrf @method('PUT')
-                    <select name="department_id" class="form-select form-select-sm" style="width:140px">
-                      @foreach($departments as $d)
-                        <option value="{{ $d->id }}" @selected($room->department_id == $d->id)>{{ $d->name }}</option>
-                      @endforeach
-                    </select>
-                    <input type="text"   name="room_no"     value="{{ $room->room_no }}" class="form-control form-control-sm" style="width:110px">
-                    <input type="number" name="capacity"    value="{{ $room->capacity }}" class="form-control form-control-sm" style="width:90px">
-                    <input type="text"   name="invigilator" value="{{ $room->invigilator }}" class="form-control form-control-sm" style="width:130px">
-                    <button class="btn btn-sm btn-outline-secondary">Save</button>
-                  </form>
-                  <form method="POST" action="{{ route('admin.rooms.destroy', $room) }}"
-                        onsubmit="return confirm('Delete room?')">
-                    @csrf @method('DELETE')
-                    <button class="btn btn-sm btn-outline-danger">Delete</button>
-                  </form>
+    {{-- FLASH MESSAGES --}}
+    @if (session('ok'))
+        <div class="alert alert-success fade-in">{{ session('ok') }}</div>
+    @endif
+    @if (session('error'))
+        <div class="alert alert-danger fade-in">{{ session('error') }}</div>
+    @endif
+
+
+
+    <div class="row g-4">
+
+        {{-- ADD DEPARTMENT --}}
+        <div class="col-lg-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5><i class="bi bi-building-add text-primary me-1"></i> Add Department</h5>
+
+                    <form class="form-mini mt-2" method="POST" action="{{ route('admin.departments.store') }}">
+                        @csrf
+                        <input class="form-control mb-2" name="name" placeholder="Department Name" required>
+
+                        <button class="btn btn-primary btn-wow w-100">Add</button>
+                    </form>
+
+                    <hr>
+
+                    <div class="small text-muted">Departments</div>
+                    <ul class="list-group mt-2">
+                        @forelse ($departments as $dept)
+                            <li class="list-group-item d-flex justify-content-between">
+                                {{ $dept->name }}
+                                <form method="POST" action="{{ route('admin.departments.destroy', $dept) }}">
+                                    @csrf @method('DELETE')
+                                    <button class="btn btn-sm btn-outline-danger">Delete</button>
+                                </form>
+                            </li>
+                        @empty
+                            <li class="list-group-item">No departments yet</li>
+                        @endforelse
+                    </ul>
+
                 </div>
-              </li>
-            @empty
-              <li class="list-group-item">No rooms yet.</li>
-            @endforelse
-          </ul>
+            </div>
         </div>
-      </div>
+
+
+        {{-- ADD ROOM --}}
+        <div class="col-lg-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5><i class="bi bi-door-open text-primary me-1"></i> Add Room</h5>
+
+                    <form class="form-mini mt-2" method="POST" action="{{ route('admin.rooms.store') }}">
+                        @csrf
+
+                        <select class="form-select mb-2" name="department_id" required>
+                            <option hidden>Select Department</option>
+                            @foreach ($departments as $d)
+                                <option value="{{ $d->id }}">{{ $d->name }}</option>
+                            @endforeach
+                        </select>
+
+                        <input class="form-control mb-2" name="room_no" placeholder="Room No" required>
+                        <input class="form-control mb-2" type="number" name="capacity" placeholder="Capacity" required>
+                        <input class="form-control mb-2" name="invigilator" placeholder="Invigilator (optional)">
+
+                        <button class="btn btn-primary btn-wow w-100">Add</button>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+
+        {{-- ADD STUDENT --}}
+        <div class="col-lg-4">
+            <div class="card h-100">
+                <div class="card-body">
+
+                    <h5><i class="bi bi-person-plus text-primary me-1"></i> Add Student</h5>
+
+                    <form class="form-mini mt-2" method="POST" action="{{ route('admin.students.store') }}">
+                        @csrf
+                        <input class="form-control mb-2" name="name" placeholder="Student Name" required>
+                        <input class="form-control mb-2" name="cmd_id" placeholder="CMD ID" required>
+
+                        <select class="form-select mb-2" name="department_id" required>
+                            <option hidden>Department</option>
+                            @foreach ($departments as $d)
+                                <option value="{{ $d->id }}">{{ $d->name }}</option>
+                            @endforeach
+                        </select>
+
+                        <input class="form-control mb-2" type="number" name="semester" min="1" max="8" placeholder="Semester">
+
+                        <select class="form-select mb-2" name="room_id">
+                            <option value="">Room (optional)</option>
+                            @foreach ($rooms as $r)
+                                <option value="{{ $r->id }}">{{ $r->room_no }}</option>
+                            @endforeach
+                        </select>
+
+                        <button class="btn btn-primary btn-wow w-100">Add Student</button>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
     </div>
 
-    {{-- Students: Create --}}
-    <div class="col-lg-4">
-      <div class="card h-100">
+
+
+    {{-- STUDENTS TABLE --}}
+    <div class="card mt-4">
         <div class="card-body">
-          <h5 class="mb-3">Add Student</h5>
-          <form class="form-mini" method="POST" action="{{ route('admin.students.store') }}">
-            @csrf
-            <div class="mb-2">
-              <input name="name" class="form-control" placeholder="Student name" required>
-              @error('name') <small class="text-danger">{{ $message }}</small> @enderror
+
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="mb-0">Students</h5>
+
+                <div class="d-flex align-items-center gap-3">
+                    <span class="small text-muted">Total: {{ $students->total() }}</span>
+
+                    {{-- EXPORT PDF BUTTON --}}
+                    <a href="{{ route('admin.export.pdf') }}" class="btn btn-danger btn-wow">
+                        <i class="bi bi-filetype-pdf me-1"></i> Export Seating Plan PDF
+                    </a>
+                </div>
             </div>
-            <div class="mb-2">
-              <input name="cmd_id" class="form-control" placeholder="CMD ID / Roll No." required>
-              @error('cmd_id') <small class="text-danger">{{ $message }}</small> @enderror
+
+            <div class="table-responsive">
+                <table class="table stylish-table align-middle">
+
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>CMD</th>
+                            <th>Dept</th>
+                            <th>Sem</th>
+                            <th>Room</th>
+                            <th>Invigilator</th>
+                            <th class="text-center" width="90">Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        @foreach ($students as $s)
+
+                            {{-- NORMAL ROW --}}
+                            <tr>
+                                <td class="fw-semibold">{{ $s->name }}</td>
+
+                                <td>
+                                    <span class="badge bg-light text-dark px-2 py-1 rounded-pill">
+                                        {{ $s->cmd_id }}
+                                    </span>
+                                </td>
+
+                                <td>{{ $s->department->name ?? '-' }}</td>
+                                <td>{{ $s->semester }}</td>
+                                <td>{{ $s->room->room_no ?? '-' }}</td>
+                                <td>{{ $s->room->invigilator ?? '-' }}</td>
+
+                                <td class="text-center">
+                                    <div class="d-flex justify-content-center gap-2">
+
+                                        {{-- EDIT COLLAPSE BUTTON --}}
+                                        <button class="btn btn-sm action-btn"
+                                                data-bs-toggle="collapse"
+                                                data-bs-target="#editRow{{ $s->id }}">
+                                            <i class="bi bi-pencil text-primary"></i>
+                                        </button>
+
+                                        {{-- DELETE --}}
+                                        <form method="POST" action="{{ route('admin.students.destroy', $s) }}"
+                                              onsubmit="return confirm('Delete student?')">
+                                            @csrf @method('DELETE')
+                                            <button class="btn btn-sm action-btn">
+                                                <i class="bi bi-trash text-danger"></i>
+                                            </button>
+                                        </form>
+
+                                    </div>
+                                </td>
+                            </tr>
+
+
+                            {{-- INLINE EDIT ROW --}}
+                            <tr id="editRow{{ $s->id }}" class="collapse inline-edit-row">
+                                <td colspan="7">
+
+                                    <form method="POST" action="{{ route('admin.students.update', $s) }}"
+                                          class="row g-2 p-3">
+                                        @csrf @method('PUT')
+
+                                        <div class="col-md-3">
+                                            <label class="small fw-bold">Name</label>
+                                            <input name="name" value="{{ $s->name }}"
+                                                   class="form-control form-control-sm">
+                                        </div>
+
+                                        <div class="col-md-2">
+                                            <label class="small fw-bold">CMD ID</label>
+                                            <input name="cmd_id" value="{{ $s->cmd_id }}"
+                                                   class="form-control form-control-sm">
+                                        </div>
+
+                                        <div class="col-md-2">
+                                            <label class="small fw-bold">Department</label>
+                                            <select name="department_id" class="form-select form-select-sm">
+                                                @foreach ($departments as $d)
+                                                    <option value="{{ $d->id }}"
+                                                        @selected($s->department_id == $d->id)>
+                                                        {{ $d->name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+
+                                        <div class="col-md-1">
+                                            <label class="small fw-bold">Sem</label>
+                                            <input type="number" name="semester" min="1" max="8"
+                                                   value="{{ $s->semester }}"
+                                                   class="form-control form-control-sm">
+                                        </div>
+
+                                        <div class="col-md-2">
+                                            <label class="small fw-bold">Room</label>
+                                            <select name="room_id" class="form-select form-select-sm">
+                                                <option value="">None</option>
+                                                @foreach ($rooms as $r)
+                                                    <option value="{{ $r->id }}"
+                                                        @selected($s->room_id == $r->id)>
+                                                        {{ $r->room_no }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+
+                                        <div class="col-md-2 d-flex align-items-end justify-content-end gap-2">
+                                            <button class="btn btn-primary btn-sm">Save</button>
+
+                                            <button type="button"
+                                                    class="btn btn-secondary btn-sm"
+                                                    data-bs-toggle="collapse"
+                                                    data-bs-target="#editRow{{ $s->id }}">
+                                                Cancel
+                                            </button>
+                                        </div>
+
+                                    </form>
+
+                                </td>
+                            </tr>
+
+                        @endforeach
+
+                    </tbody>
+
+                </table>
             </div>
-            <div class="mb-2">
-              <select name="department_id" class="form-select" required>
-                <option value="" hidden>Department</option>
-                @foreach($departments as $d)
-                  <option value="{{ $d->id }}">{{ $d->name }}</option>
-                @endforeach
-              </select>
-              @error('department_id') <small class="text-danger">{{ $message }}</small> @enderror
+
+            <div class="mt-3">
+                {{ $students->links() }}
             </div>
-            <div class="mb-2">
-              <input name="semester" type="number" min="1" max="8" class="form-control" placeholder="Semester" required>
-              @error('semester') <small class="text-danger">{{ $message }}</small> @enderror
-            </div>
-            <div class="mb-2">
-              <select name="room_id" class="form-select">
-                <option value="">Room (optional)</option>
-                @foreach($rooms as $r)
-                  <option value="{{ $r->id }}">{{ $r->room_no }} (cap {{ $r->capacity }})</option>
-                @endforeach
-              </select>
-              @error('room_id') <small class="text-danger">{{ $message }}</small> @enderror
-            </div>
-            <button class="btn btn-primary btn-wow w-100">Create Student</button>
-          </form>
+
         </div>
-      </div>
     </div>
-  </div>
 
-  {{-- Students table --}}
-  <div class="card mt-4">
-    <div class="card-body">
-      <div class="d-flex justify-content-between align-items-center mb-2">
-        <h5 class="mb-0">Students</h5>
-        <span class="text-muted small">Latest first</span>
-      </div>
-      <div class="table-responsive">
-        <table class="table align-middle">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>CMD ID</th>
-              <th>Department</th>
-              <th>Semester</th>
-              <th>Room</th>
-              <th>Invigilator</th>
-              <th style="width:200px">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            @forelse($students as $s)
-              <tr>
-                <td>{{ $s->name }}</td>
-                <td>{{ $s->cmd_id }}</td>
-                <td>{{ $s->department?->name ?? '-' }}</td>
-                <td>{{ $s->semester }}</td>
-                <td>{{ $s->room?->room_no ?? '-' }}</td>
-                <td>{{ $s->room?->invigilator ?? '-' }}</td>
-                <td>
-                  <div class="d-flex gap-2">
-                    {{-- Inline update --}}
-                    <form method="POST" action="{{ route('admin.students.update', $s) }}" class="d-flex flex-wrap gap-1">
-                      @csrf @method('PUT')
-                      <input name="name" value="{{ $s->name }}" class="form-control form-control-sm" style="width:120px">
-                      <input name="cmd_id" value="{{ $s->cmd_id }}" class="form-control form-control-sm" style="width:100px">
-                      <select name="department_id" class="form-select form-select-sm" style="width:140px">
-                        @foreach($departments as $d)
-                          <option value="{{ $d->id }}" @selected($s->department_id == $d->id)>{{ $d->name }}</option>
-                        @endforeach
-                      </select>
-                      <input name="semester" type="number" min="1" max="8" value="{{ $s->semester }}" class="form-control form-control-sm" style="width:90px">
-                      <select name="room_id" class="form-select form-select-sm" style="width:120px">
-                        <option value="">-</option>
-                        @foreach($rooms as $r)
-                          <option value="{{ $r->id }}" @selected($s->room_id == $r->id)>{{ $r->room_no }}</option>
-                        @endforeach
-                      </select>
-                      <button class="btn btn-sm btn-outline-secondary">Save</button>
-                    </form>
-
-                    <form method="POST" action="{{ route('admin.students.destroy', $s) }}"
-                          onsubmit="return confirm('Delete this student?')">
-                      @csrf @method('DELETE')
-                      <button class="btn btn-sm btn-outline-danger">Delete</button>
-                    </form>
-                  </div>
-                </td>
-              </tr>
-            @empty
-              <tr><td colspan="7" class="text-center text-muted">No students found.</td></tr>
-            @endforelse
-          </tbody>
-        </table>
-      </div>
-
-      <div class="mt-2">
-        {{ $students->links() }}
-      </div>
-    </div>
-  </div>
 </div>
 @endsection

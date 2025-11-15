@@ -6,19 +6,42 @@
         <div class="flex justify-between h-16">
 
             <!-- Left Section -->
-            <div class="flex items-center gap-6">
+            <div class="flex items-center gap-8">
 
-                <!-- Logo -->
+                <!-- Custom ESE System Logo -->
                 <a href="{{ route('dashboard') }}" class="flex items-center hover:scale-[1.02] transition">
-                    <x-application-logo class="block h-9 w-auto fill-current text-gray-900 dark:text-gray-200" />
+                    <div class="flex items-center gap-2">
+                        <span class="text-2xl font-extrabold text-blue-600 tracking-tight">ESE</span>
+                        <span class="text-xl font-semibold text-gray-800 dark:text-gray-200">System</span>
+                    </div>
                 </a>
 
-                <!-- Dashboard Link -->
-                <div class="hidden sm:flex space-x-8">
+                <!-- Desktop Navigation Links -->
+                <div class="hidden sm:flex space-x-6">
+
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')"
                         class="font-semibold hover:text-blue-600 dark:hover:text-blue-400 transition">
-                        {{ __('Dashboard') }}
+                        Dashboard
                     </x-nav-link>
+
+                    <x-nav-link :href="route('admin.students.index')" 
+                        :active="request()->routeIs('admin.students.*')"
+                        class="font-semibold hover:text-blue-600 dark:hover:text-blue-400 transition">
+                        Students
+                    </x-nav-link>
+
+                    <x-nav-link :href="route('admin.rooms.index')" 
+                        :active="request()->routeIs('admin.rooms.*')"
+                        class="font-semibold hover:text-blue-600 dark:hover:text-blue-400 transition">
+                        Rooms
+                    </x-nav-link>
+
+                    <x-nav-link :href="route('admin.invigilators.index')" 
+                        :active="request()->routeIs('admin.invigilators.*')"
+                        class="font-semibold hover:text-blue-600 dark:hover:text-blue-400 transition">
+                        Invigilators
+                    </x-nav-link>
+
                 </div>
             </div>
 
@@ -28,7 +51,6 @@
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
 
-                        <!-- Trigger Button -->
                         <button class="inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-transparent 
                                 bg-white/70 dark:bg-gray-800/70
                                 text-gray-700 dark:text-gray-300
@@ -48,7 +70,7 @@
                         <!-- Profile -->
                         <x-dropdown-link :href="route('profile.edit')">
                             <i class="bi bi-person-circle text-blue-500 me-1"></i>
-                            {{ __('Profile') }}
+                            Profile
                         </x-dropdown-link>
 
                         <!-- Logout -->
@@ -57,7 +79,7 @@
                             <x-dropdown-link href="{{ route('logout') }}"
                                 onclick="event.preventDefault(); this.closest('form').submit();">
                                 <i class="bi bi-box-arrow-right text-red-500 me-1"></i>
-                                {{ __('Log Out') }}
+                                Log Out
                             </x-dropdown-link>
                         </form>
                     </x-slot>
@@ -76,7 +98,6 @@
                               class="inline-flex"
                               stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                               d="M4 6h16M4 12h16M4 18h16" />
-
                         <path :class="{'hidden': ! open, 'inline-flex': open }"
                               class="hidden"
                               stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -89,17 +110,31 @@
         </div>
     </div>
 
-    <!-- Responsive Mobile Menu -->
+    <!-- Mobile Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="sm:hidden transition-all duration-200">
 
         <!-- Links -->
         <div class="pt-2 pb-3 space-y-1 bg-white dark:bg-gray-800 shadow-inner">
+
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
+                Dashboard
             </x-responsive-nav-link>
+
+            <x-responsive-nav-link :href="route('admin.students.index')" :active="request()->routeIs('admin.students.*')">
+                Students
+            </x-responsive-nav-link>
+
+            <x-responsive-nav-link :href="route('admin.rooms.index')" :active="request()->routeIs('admin.rooms.*')">
+                Rooms
+            </x-responsive-nav-link>
+
+            <x-responsive-nav-link :href="route('admin.invigilators.index')" :active="request()->routeIs('admin.invigilators.*')">
+                Invigilators
+            </x-responsive-nav-link>
+
         </div>
 
-        <!-- User Info + Logout -->
+        <!-- User Info -->
         <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800">
 
             <div class="px-4 pb-2">
@@ -114,7 +149,7 @@
             <div class="mt-3 space-y-1">
 
                 <x-responsive-nav-link :href="route('profile.edit')">
-                    {{ __('Profile') }}
+                    Profile
                 </x-responsive-nav-link>
 
                 <!-- Mobile Logout -->
@@ -122,7 +157,7 @@
                     @csrf
                     <x-responsive-nav-link href="{{ route('logout') }}"
                         onclick="event.preventDefault(); this.closest('form').submit();">
-                        {{ __('Log Out') }}
+                        Log Out
                     </x-responsive-nav-link>
                 </form>
 

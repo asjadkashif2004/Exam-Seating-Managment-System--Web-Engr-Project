@@ -1,10 +1,13 @@
+
+<!--Main Nav bar system settings-->
+
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>@yield('title', config('app.name', 'Seating Manager'))</title>
+  <title>@yield('title', 'ESE System')</title>
 
   {{-- Bootstrap & Icons --}}
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -15,13 +18,13 @@
 
   <style>
     :root{
-      --brand:#0b5ed7;         /* Primary (blue) */
-      --brand-2:#37b24d;       /* Success accent */
-      --ink:#0f172a;           /* Headings */
-      --muted:#5b6777;         /* Body text */
-      --bg:#f7f9fc;            /* Page background */
-      --card:#ffffff;          /* Card background */
-      --pill:#e7f1ff;          /* Soft badge */
+      --brand:#0b5ed7;
+      --brand-2:#37b24d;
+      --ink:#0f172a;
+      --muted:#5b6777;
+      --bg:#f7f9fc;
+      --card:#ffffff;
+      --pill:#e7f1ff;
       --divider:#eef2f7;
       --gradient: linear-gradient(180deg, #f9fbff 0%, #f2f6ff 100%);
     }
@@ -37,14 +40,9 @@
       letter-spacing: -0.02em;
     }
     .lead{ color: #445065; }
-    .btn-brand{
-      background: var(--brand);
-      border-color: var(--brand);
-    }
+    .btn-brand{ background: var(--brand); border-color: var(--brand); }
     .btn-brand:hover{ background:#094cb2; border-color:#094cb2; }
-    .btn-outline-brand{
-      border-color: var(--brand); color: var(--brand); background: #fff;
-    }
+    .btn-outline-brand{ border-color: var(--brand); color: var(--brand); background: #fff; }
     .btn-outline-brand:hover{ background: var(--brand); color:#fff; }
     .btn-wow{
       box-shadow: 0 6px 18px rgba(11,94,215,.12);
@@ -104,7 +102,9 @@
     }
     .brand-gradient{
       background: linear-gradient(90deg, #0b5ed7 0%, #5c9dff 60%, #37b24d 100%);
-      -webkit-background-clip: text; background-clip: text; color: transparent;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
     }
     .navbar-brand:hover{ transform: translateY(-1px); }
     .navbar .nav-link{
@@ -143,7 +143,7 @@
         <!-- Brand -->
         <a class="navbar-brand d-flex align-items-center gap-2" href="{{ url('/') }}">
             <i class="bi bi-grid-3x3-gap-fill fs-5 text-primary"></i>
-            <b class="brand-gradient">{{ config('app.name', 'Exam Seating Manager') }}</b>
+            <b class="brand-gradient">ESE System</b>
         </a>
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
@@ -160,7 +160,6 @@
                             <i class="bi bi-speedometer2 me-1"></i> Dashboard
                         </a>
 
-                        <!-- Logout -->
                         <form method="POST" action="{{ route('logout') }}" class="d-inline">
                             @csrf
                             <button type="submit" class="btn btn-outline-danger btn-wow">
@@ -184,7 +183,7 @@
             </ul>
         </div>
     </div>
-</nav>
+  </nav>
 
   {{-- Main --}}
   <main>
@@ -194,7 +193,7 @@
   {{-- Footer --}}
   <footer class="footer bg-white py-4 mt-5">
     <div class="container d-flex flex-column flex-lg-row justify-content-between align-items-center">
-      <div class="small">© {{ date('Y') }} {{ config('app.name', 'Seating Manager') }}. All rights reserved.</div>
+      <div class="small">© {{ date('Y') }} ESE System. All rights reserved.</div>
       <div class="small"><span class="badge badge-soft rounded-pill">v1.0</span></div>
     </div>
   </footer>
