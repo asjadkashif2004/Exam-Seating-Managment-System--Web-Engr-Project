@@ -5,299 +5,327 @@
 
 @push('head')
 <style>
-  /* ===== Theme polish ===== */
-  :root{
-    --brand:#0b5ed7;           /* Primary */
-    --brand-2:#37b24d;         /* Accent */
-    --ink:#0f172a;             /* Headlines */
-    --muted:#5b6777;           /* Body text */
-    --bg:#f7f9fc;              /* Page bg (from layout) */
-    --card:#ffffff;            /* Card bg */
-    --divider:#eef2f7;
-    --grad-1: linear-gradient(120deg,#f6faff 0%,#eef6ff 40%,#e6f7ff 100%);
-    --grad-hero: radial-gradient(1200px 600px at 20% -10%, #dcebff 0%, rgba(220,235,255,0) 60%),
-                 radial-gradient(900px 500px at 90% -20%, #eafaf4 0%, rgba(234,250,244,0) 55%);
-  }
+/* ============================
+   MODERN COLORFUL THEME
+   ============================ */
+:root {
+    --brand:#7c3aed;  /* Purple main */
+    --brand2:#06b6d4; /* Cyan accent */
+    --brand3:#ec4899; /* Pink accent */
+    --ink:#0f172a;
+    --muted:#64748b;
+    --card:#ffffff;
+    --bg:#fafbff;
+}
 
-  /* ===== Utilities / Animations ===== */
-  .btn-wow{
-    transform: translateY(0);
-    transition: transform .2s ease, box-shadow .2s ease, background .2s ease, border-color .2s ease;
-    box-shadow: 0 10px 20px rgba(11,94,215,.12);
-  }
-  .btn-wow:hover{
-    transform: translateY(-2px);
-    box-shadow: 0 14px 28px rgba(11,94,215,.18);
-  }
-  .btn-outline-brand.btn-wow{
-    box-shadow:none;
-  }
+/* Page background with blobs */
+body {
+    background: var(--bg);
+    position: relative;
+    overflow-x: hidden;
+}
 
-  .tile{
-    background: var(--card);
-    border:1px solid var(--divider);
-    border-radius: 16px;
-    padding: 1.1rem;
-    transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
-    box-shadow: 0 6px 18px rgba(16,24,40,.04);
-  }
-  .tile:hover{
-    transform: translateY(-6px);
-    border-color: rgba(11,94,215,.22);
-    box-shadow: 0 16px 32px rgba(16,24,40,.10);
-  }
+.bg-blob {
+    position: absolute;
+    width: 480px;
+    height: 480px;
+    border-radius: 50%;
+    filter: blur(140px);
+    opacity: .6;
+    z-index: -1;
+}
+.blob-1 { background:#c084fc; top:-120px; left:-80px; }
+.blob-2 { background:#5eead4; top:220px; right:-100px; }
+.blob-3 { background:#f472b6; bottom:-250px; left:30%; }
 
-  .feature-icon{
-    width: 48px; height: 48px; border-radius: 14px;
+/* Floating animated shapes */
+.float {
+    animation: float 6s ease-in-out infinite;
+}
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-18px); }
+    100% { transform: translateY(0px); }
+}
+
+/* HERO */
+.hero {
+    padding: 7rem 0;
+    position: relative;
+}
+
+/* Buttons */
+.btn-brand {
+    background: var(--brand);
+    color:white;
+    padding:.9rem 1.4rem;
+    border-radius:14px;
+    font-weight:600;
+    box-shadow:0 14px 32px rgba(124,58,237,.25);
+    transition:.25s;
+}
+.btn-brand:hover {
+    transform: translateY(-3px);
+    box-shadow:0 18px 40px rgba(124,58,237,.35);
+}
+
+.btn-outline-brand {
+    border:2px solid var(--brand2);
+    color: var(--brand2);
+    padding:.9rem 1.4rem;
+    border-radius:14px;
+    font-weight:600;
+    transition:.25s;
+}
+.btn-outline-brand:hover {
+    background:var(--brand2);
+    color:white;
+    transform: translateY(-3px);
+}
+
+/* Illustration Card */
+.illus-box {
+    background:white;
+    border-radius:22px;
+    padding:2rem;
+    box-shadow: 0 18px 40px rgba(0,0,0,.07);
+}
+
+/* Stats */
+.stat-card {
+    background:white;
+    padding:1.2rem;
+    border-radius:18px;
+    box-shadow:0 10px 26px rgba(0,0,0,.06);
+    text-align:center;
+    border:1px solid #f1f5f9;
+}
+.stat-num {
+    font-size:2.2rem;
+    font-weight:800;
+    color:var(--ink);
+}
+.stat-label {
+    color:var(--muted);
+    font-size:.9rem;
+}
+
+/* Features */
+.feature-tile {
+    background:white;
+    padding:2rem 1.5rem;
+    border-radius:20px;
+    box-shadow:0 20px 40px rgba(0,0,0,.05);
+    transition:.25s;
+    border:1px solid #e5e7f0;
+}
+.feature-tile:hover {
+    transform:translateY(-8px);
+    box-shadow:0 30px 50px rgba(0,0,0,.10);
+}
+.feature-icon {
+    width:70px; height:70px;
+    border-radius:20px;
+    background:linear-gradient(135deg,var(--brand),var(--brand3));
     display:grid; place-items:center;
-    background: #eaf2ff; color: var(--brand); font-size: 1.25rem;
-  }
+    color:white; font-size:1.8rem;
+    margin-bottom:1rem;
+}
 
-  .hero{
-    background: var(--grad-hero), var(--grad-1);
-    border-bottom: 1px solid var(--divider);
-    position: relative; overflow: hidden;
-  }
-  .hero-badge{
-    display:inline-flex; align-items:center; gap:.5rem;
-    background: rgba(255,255,255,.7);
-    border:1px solid #e7eef9;
-    padding:.4rem .75rem; border-radius:999px;
-    backdrop-filter: blur(6px);
-    font-weight:600; color:#0b5ed7;
-  }
+/* Marquee */
+.marquee {
+    white-space: nowrap;
+    overflow:hidden;
+    border-radius:16px;
+    background:white;
+    box-shadow:0 10px 30px rgba(0,0,0,.05);
+    padding:.7rem .8rem;
+    margin-top:1rem;
+}
+.marquee span {
+    display:inline-block;
+    padding-right:3rem;
+    font-weight:600;
+    color:#475569;
+    animation:scroll 14s linear infinite;
+}
+@keyframes scroll {
+    from { transform:translateX(0); }
+    to { transform:translateX(-50%); }
+}
 
-  .kpi{
-    display:flex; flex-direction:column; align-items:center; justify-content:center;
-  }
-  .kpi .num{ font-weight:800; letter-spacing:-.02em; color:var(--ink); font-size:clamp(1.25rem, 2.6vw, 1.7rem);}
-  .kpi .lbl{ font-size:.85rem; color:#6a7686;}
+/* Reveal */
+.reveal { opacity:0; transform: translateY(30px); transition:.7s ease; }
+.reveal.show { opacity:1; transform:none; }
 
-  /* Animated pulse dot (live) */
-  .pulse-dot{
-    width:10px;height:10px;border-radius:999px;background:#20c997; position:relative;
-  }
-  .pulse-dot::after{
-    content:''; position:absolute; inset:-6px; border-radius:999px;
-    border:2px solid rgba(32,201,151,.5); animation:pulse 1.8s ease-out infinite;
-  }
-  @keyframes pulse{
-    0%{ transform:scale(.4); opacity:.9; }
-    90%{ transform:scale(1.5); opacity:0; }
-    100%{ transform:scale(1.5); opacity:0; }
-  }
-
-  /* Seat grid illustration */
-  .seat-grid{
-    display:grid; grid-template-columns: repeat(8, 18px); gap:8px; justify-content:center;
-  }
-  .seat{
-    width:18px;height:18px;border-radius:4px;background:#eaf2ff; border:1px solid #cfe1ff;
-    transition: transform .2s ease, background .2s ease, border-color .2s ease;
-  }
-  .seat:nth-child(4n){ background:#eafaf4; border-color:#c9f0e1; }
-  .seat:hover{ transform: translateY(-3px); background:#e1edff; border-color:#b8d6ff; }
-
-  /* Glass cards */
-  .glass{
-    background: rgba(255,255,255,.7); backdrop-filter: blur(10px);
-    border:1px solid rgba(231, 238, 249, .8); border-radius:16px;
-    box-shadow: 0 10px 30px rgba(16,24,40,.08);
-  }
-
-  /* Marquee */
-  .marquee{
-    white-space:nowrap; overflow:hidden; border:1px solid var(--divider);
-    background:#fff; border-radius:12px; padding:.55rem .75rem;
-  }
-  .marquee span{
-    display:inline-block; padding-right:2rem; animation:scroll 22s linear infinite;
-    color:#3a4a60; font-weight:600;
-  }
-  @keyframes scroll{
-    from{ transform:translateX(0); }
-    to{ transform:translateX(-50%); }
-  }
-
-  /* Section spacing */
-  .section-title{
-    color:var(--ink); font-weight:800; letter-spacing:-.01em;
-  }
-
-  /* Scroll reveal (tiny) */
-  .reveal{ opacity:0; transform: translateY(16px); transition: .6s ease; }
-  .reveal.show{ opacity:1; transform:none; }
-
-  /* Small hover for hero CTAs */
-  .hero-cta .btn{ border-radius:12px; padding:.75rem 1.15rem; }
 </style>
 @endpush
 
+
 @section('content')
 
-  {{-- HERO --}}
-  <section class="hero py-5 py-lg-6">
+{{-- BACKGROUND BLOBS --}}
+<div class="bg-blob blob-1 float"></div>
+<div class="bg-blob blob-2 float"></div>
+<div class="bg-blob blob-3 float"></div>
+
+
+
+{{-- ===============================
+     HERO SECTION
+     =============================== --}}
+<section class="hero">
     <div class="container">
-      <div class="row align-items-center g-4">
-        <div class="col-lg-7">
-          <span class="hero-badge">
-            <i class="bi bi-stars"></i>
-            Seamless Exam Seating
-            <span class="pulse-dot ms-1"></span>
-          </span>
 
-          <h1 class="display-5 fw-800 mt-3 mb-2" style="color:var(--ink); letter-spacing:-.02em;">
-            Plan exam seating in minutes—beautifully.
-          </h1>
-          <p class="lead mb-4" style="color:#475569;">
-            Import data, generate smart placements, and print room sheets in one click.
-          </p>
+        <div class="row align-items-center g-5">
 
-          <div class="d-flex flex-wrap gap-2 hero-cta">
-            @if (Route::has('login'))
-              @auth
-                <a href="{{ url('/dashboard') }}" class="btn btn-brand btn-lg btn-wow">
-                  <i class="bi bi-lightning-charge-fill me-1"></i> Go to Dashboard
-                </a>
-              @else
-                <a href="{{ route('login') }}" class="btn btn-brand btn-lg btn-wow">
-                  <i class="bi bi-rocket-takeoff-fill me-1"></i> Get Started
-                </a>
-                @if (Route::has('register'))
-                  <a href="{{ route('register') }}" class="btn btn-outline-brand btn-lg btn-wow">
-                    Create Account
-                  </a>
-                @endif
-              @endauth
-            @endif
-          </div>
+            <div class="col-lg-6 reveal">
+                <h1 class="display-4 fw-bold" style="color:var(--ink);line-height:1.15;">
+                    Make exam seating <span style="color:var(--brand3);">beautiful,</span>
+                    <br>
+                    accurate & <span style="color:var(--brand2);">effortless.</span>
+                </h1>
 
-          <div class="row mt-4 g-3">
-            <div class="col-4">
-              <div class="tile text-center py-3">
-                <div class="kpi">
-                  <div class="num">12</div>
-                  <div class="lbl">Rooms</div>
+                <p class="lead mt-3" style="color:var(--muted); font-size:1.15rem;">
+                    Auto-generate seat plans, allocate rooms, track students and print stunning PDF sheets —
+                    all powered by a vibrant modern interface.
+                </p>
+
+                <div class="mt-4 d-flex flex-wrap gap-3">
+                    @auth
+                        <a href="/dashboard" class="btn-brand"><i class="bi bi-speedometer me-1"></i> Go to Dashboard</a>
+                    @else
+                        <a href="{{ route('login') }}" class="btn-brand"><i class="bi bi-rocket-takeoff me-1"></i> Start Now</a>
+                        <a href="{{ route('register') }}" class="btn-outline-brand">Create Account</a>
+                    @endauth
                 </div>
-              </div>
-            </div>
-            <div class="col-4">
-              <div class="tile text-center py-3">
-                <div class="kpi">
-                  <div class="num">486</div>
-                  <div class="lbl">Students</div>
-                </div>
-              </div>
-            </div>
-            <div class="col-4">
-              <div class="tile text-center py-3">
-                <div class="kpi">
-                  <div class="num">3</div>
-                  <div class="lbl">Active Plans</div>
-                </div>
-              </div>
-            </div>
-          </div>
 
-          <div class="marquee mt-4">
-            <span><i class="bi bi-check-circle-fill text-success me-1"></i> Capacity-aware allocation</span>
-            <span><i class="bi bi-check-circle-fill text-success me-1"></i> Neighbour rules</span>
-            <span><i class="bi bi-check-circle-fill text-success me-1"></i> One-click PDFs</span>
-            <span><i class="bi bi-check-circle-fill text-success me-1"></i> Role-based access</span>
-            <span><i class="bi bi-check-circle-fill text-success me-1"></i> CSV import/export</span>
-            <span><i class="bi bi-check-circle-fill text-success me-1"></i> Live dashboard</span>
-          </div>
+                {{-- LIVE STATS --}}
+                <div class="row g-3 mt-5">
+                    <div class="col-4">
+                        <div class="stat-card">
+                            <div class="stat-num">{{ \App\Models\Room::count() }}</div>
+                            <div class="stat-label">Rooms</div>
+                        </div>
+                    </div>
+
+                    <div class="col-4">
+                        <div class="stat-card">
+                            <div class="stat-num">{{ \App\Models\Student::count() }}</div>
+                            <div class="stat-label">Students</div>
+                        </div>
+                    </div>
+
+                    <div class="col-4">
+                        <div class="stat-card">
+                            <div class="stat-num">{{ \App\Models\User::where('role','staff')->count() }}</div>
+                            <div class="stat-label">Staff</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            {{-- HERO ILLUSTRATION --}}
+            <div class="col-lg-6 reveal">
+                <div class="illus-box">
+                    <img src="https://img.freepik.com/premium-vector/man-with-online-test-concept-distance-education-training-learning-student-completes-assignments-exam-knowledge-information-talented-schooler-cartoon-flat-vector-illustration_118813-16970.jpg?semt=ais_hybrid&w=740&q=80"
+                         class="img-fluid float"
+                         alt="Exam Seating Illustration">
+                </div>
+            </div>
+
         </div>
 
-        <div class="col-lg-5">
-          <div class="glass p-4">
-            <div class="d-flex align-items-center mb-3">
-              <div class="feature-icon me-2"><i class="bi bi-grid-3x3-gap-fill"></i></div>
-              <div>
-                <div class="fw-semibold text-dark">Seat Layout Preview</div>
-                <div class="small text-muted">Illustrative arrangement</div>
-              </div>
-            </div>
-            <div class="seat-grid my-3">
-              @for($i=0;$i<72;$i++)
-                <div class="seat"></div>
-              @endfor
-            </div>
-            <div class="d-flex gap-2 mt-3">
-              <span class="badge rounded-pill text-bg-light border"><i class="bi bi-shield-check me-1 text-success"></i> Validated</span>
-              <span class="badge rounded-pill text-bg-light border"><i class="bi bi-filetype-pdf me-1 text-danger"></i> PDF Ready</span>
-              <span class="badge rounded-pill text-bg-light border"><i class="bi bi-clock-history me-1 text-primary"></i> Real-time</span>
-            </div>
-          </div>
+        {{-- MARQUEE --}}
+        <div class="marquee reveal mt-4">
+            <span>✨ Capacity-aware allocations</span>
+            <span>🪄 Random seating generator</span>
+            <span>📄 Beautiful PDF layout sheets</span>
+            <span>🔍 Student search portal</span>
+            <span>🎨 Clean modern UI</span>
         </div>
-      </div>
     </div>
-  </section>
+</section>
 
-  {{-- FEATURE STRIP (short & punchy) --}}
-  <section class="py-5">
+
+
+
+{{-- ===============================
+     FEATURES GRID
+     =============================== --}}
+<section class="py-5">
     <div class="container">
-      <h2 class="section-title mb-4">Fast, focused tools</h2>
-      <div class="row g-3 g-lg-4">
-        <div class="col-6 col-md-3">
-          <div class="tile h-100 text-center p-3 reveal">
-            <div class="feature-icon mx-auto mb-2"><i class="bi bi-upload"></i></div>
-            <div class="fw-semibold text-dark">CSV Import</div>
-            <div class="small text-muted">Students & Rooms</div>
-          </div>
-        </div>
-        <div class="col-6 col-md-3">
-          <div class="tile h-100 text-center p-3 reveal" style="transition-delay:.08s">
-            <div class="feature-icon mx-auto mb-2"><i class="bi bi-cpu"></i></div>
-            <div class="fw-semibold text-dark">Auto Allocate</div>
-            <div class="small text-muted">Capacity + Neighbours</div>
-          </div>
-        </div>
-        <div class="col-6 col-md-3">
-          <div class="tile h-100 text-center p-3 reveal" style="transition-delay:.16s">
-            <div class="feature-icon mx-auto mb-2"><i class="bi bi-arrow-left-right"></i></div>
-            <div class="fw-semibold text-dark">Smart Swap</div>
-            <div class="small text-muted">Safe re-validation</div>
-          </div>
-        </div>
-        <div class="col-6 col-md-3">
-          <div class="tile h-100 text-center p-3 reveal" style="transition-delay:.24s">
-            <div class="feature-icon mx-auto mb-2"><i class="bi bi-filetype-pdf"></i></div>
-            <div class="fw-semibold text-dark">Print-Ready</div>
-            <div class="small text-muted">Room sheets & slips</div>
-          </div>
-        </div>
-      </div>
 
-      <div class="text-center mt-4">
-        @if (Route::has('login'))
-          @auth
-            <a href="{{ url('/dashboard') }}" class="btn btn-brand btn-lg btn-wow">
-              <i class="bi bi-plus-circle me-1"></i> Create Seating Plan
-            </a>
-          @else
-            <a href="{{ route('login') }}" class="btn btn-brand btn-lg btn-wow me-2">
-              <i class="bi bi-box-arrow-in-right me-1"></i> Login
-            </a>
-            @if (Route::has('register'))
-              <a href="{{ route('register') }}" class="btn btn-outline-brand btn-lg btn-wow">
-                Register
-              </a>
-            @endif
-          @endauth
-        @endif
-      </div>
+        <h2 class="fw-bold text-center mb-5 reveal" style="color:var(--ink);">
+            Tools that make exam planning simple & fun
+        </h2>
+
+        <div class="row g-4">
+
+            <div class="col-md-3">
+                <div class="feature-tile reveal">
+                    <div class="feature-icon"><i class="bi bi-upload"></i></div>
+                    <h5>CSV Import</h5>
+                    <p class="text-muted small">Upload all students & rooms in seconds.</p>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="feature-tile reveal" style="transition-delay:.1s">
+                    <div class="feature-icon"><i class="bi bi-shuffle"></i></div>
+                    <h5>Random Generator</h5>
+                    <p class="text-muted small">Instant shuffling with smart spacing.</p>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="feature-tile reveal" style="transition-delay:.2s">
+                    <div class="feature-icon"><i class="bi bi-search"></i></div>
+                    <h5>Student Search</h5>
+                    <p class="text-muted small">Let students quickly find their rooms.</p>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="feature-tile reveal" style="transition-delay:.3s">
+                    <div class="feature-icon"><i class="bi bi-filetype-pdf"></i></div>
+                    <h5>PDF Export</h5>
+                    <p class="text-muted small">Generate print-ready room sheets.</p>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="text-center mt-5 reveal">
+            @auth
+                <a href="/dashboard" class="btn-brand btn-lg">
+                    <i class="bi bi-plus-circle me-1"></i> Create Seating Plan
+                </a>
+            @else
+                <a href="{{ route('login') }}" class="btn-brand btn-lg me-2">Login</a>
+                <a href="{{ route('register') }}" class="btn-outline-brand btn-lg">Register</a>
+            @endauth
+        </div>
+
     </div>
-  </section>
+</section>
+
+
 @endsection
 
 @push('scripts')
 <script>
-  // tiny scroll reveal
-  const els = document.querySelectorAll('.reveal');
-  const io = new IntersectionObserver((entries)=>{
-    entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('show'); io.unobserve(e.target); }});
-  }, { threshold:.2 });
-  els.forEach(el => io.observe(el));
+/* Minimal reveal-on-scroll */
+const reveals = document.querySelectorAll('.reveal');
+const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+        if(e.isIntersecting){
+            e.target.classList.add('show');
+            io.unobserve(e.target);
+        }
+    })
+},{threshold:.2});
+reveals.forEach(r=>io.observe(r));
 </script>
 @endpush

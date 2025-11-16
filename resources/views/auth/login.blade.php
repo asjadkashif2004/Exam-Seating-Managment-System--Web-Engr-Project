@@ -3,157 +3,214 @@
 
 @push('head')
 <style>
-  :root{
-    --brand:#0b5ed7;         /* primary */
-    --ink:#0f172a;           /* headings */
-    --muted:#5b6777;         /* body */
-    --bg:#f7f9fc;            /* page bg */
-    --card:#ffffff;          /* card bg */
-    --divider:#eef2f7;
-    --grad:linear-gradient(180deg,#f3f8ff 0%,#eef4ff 100%);
-  }
-  body{ background:var(--bg); }
-  .auth-hero{
-    background: var(--grad);
-    border-bottom:1px solid var(--divider);
-  }
-  .auth-card{
-    border:1px solid var(--divider);
-    background:var(--card);
-    box-shadow: 0 12px 28px rgba(16,24,40,.06);
-    border-radius: 16px;
-  }
-  .brand-badge{
-    width:48px;height:48px;border-radius:12px;
-    display:grid;place-items:center;
-    background:#eaf2ff;color:var(--brand);font-size:1.25rem;
-  }
-  .form-label{ color:#364152; font-weight:600; }
-  .form-control{
-    border-radius:10px; padding:.7rem .9rem;
-    border:1px solid #e6e9ef;
-  }
-  .form-control:focus{
-    border-color:var(--brand);
-    box-shadow:0 0 0 .2rem rgba(11,94,215,.15);
-  }
-  .btn-brand{
-    background:var(--brand); border-color:var(--brand);
-    border-radius:10px; padding:.6rem 1rem; font-weight:600;
-  }
-  .btn-brand:hover{ background:#094cb2; border-color:#094cb2; }
-  .link-muted{ color:var(--muted); }
-  .link-muted:hover{ color:#2d3748; }
-  .small-muted{ color:#6b7685; }
+
+    :root {
+        --brand:#4f46e5;
+        --brand-dark:#3730a3;
+        --ink:#0f172a;
+        --muted:#64748b;
+        --card:#ffffffcc;
+    }
+
+    /* ----------- Animated Background ----------- */
+    body {
+        background: linear-gradient(135deg, #eef2ff, #e0e7ff, #f8fafc);
+        min-height: 100vh;
+        overflow-x: hidden;
+        position: relative;
+    }
+
+    .float-circle {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(40px);
+        animation: float 8s infinite ease-in-out alternate;
+        opacity: 0.55;
+    }
+
+    .c1 {
+        width: 420px;
+        height: 420px;
+        top: -60px;
+        left: -80px;
+        background: #6366f1;
+    }
+
+    .c2 {
+        width: 360px;
+        height: 360px;
+        bottom: -40px;
+        right: -60px;
+        background: #a5b4fc;
+        animation-duration: 10s;
+    }
+
+    @keyframes float {
+        from { transform: translate(0,0) scale(1); }
+        to { transform: translate(40px, -40px) scale(1.1); }
+    }
+
+    /* ----------- Auth Card ----------- */
+    .auth-card {
+        position: relative;
+        background: rgba(255,255,255,0.72);
+        backdrop-filter: blur(14px);
+        border-radius: 22px;
+        padding: 40px;
+        box-shadow: 0 12px 40px rgba(0,0,0,0.08);
+        animation: fadeSlideUp .6s ease;
+        border: 1px solid #e5e7eb;
+    }
+
+    @keyframes fadeSlideUp {
+        from { opacity:0; transform: translateY(30px); }
+        to   { opacity:1; transform: translateY(0); }
+    }
+
+    /* ----------- Branding ----------- */
+    .brand-icon {
+        width: 62px;
+        height: 62px;
+        border-radius: 18px;
+        background: #eef2ff;
+        color: var(--brand);
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        font-size:1.7rem;
+        margin: 0 auto 15px;
+    }
+
+    .title {
+        font-weight: 800;
+        font-size: 2rem;
+        color: var(--ink);
+        text-align:center;
+        letter-spacing:-.02em;
+    }
+
+    .subtitle {
+        text-align:center;
+        color: var(--muted);
+        margin-top: 4px;
+        font-size: 0.95rem;
+    }
+
+    /* ----------- Inputs ----------- */
+    .form-label {
+        font-weight: 600;
+        margin-bottom: 6px;
+        color:#334155;
+    }
+
+    .form-control {
+        height: 50px;
+        border-radius: 12px;
+        border:1px solid #e2e8f0;
+        padding-left:14px;
+        transition: 0.25s ease;
+    }
+
+    .form-control:focus {
+        border-color: var(--brand);
+        box-shadow: 0 0 0 .25rem rgba(79,70,229,.18);
+    }
+
+    /* ----------- Button ----------- */
+    .btn-brand {
+        background: var(--brand);
+        border-color: var(--brand);
+        height: 48px;
+        border-radius: 12px;
+        font-weight: 600;
+        letter-spacing: .3px;
+        transition: .25s ease;
+        color: #fff;
+    }
+    .btn-brand:hover {
+        background: var(--brand-dark);
+        border-color: var(--brand-dark);
+        transform: translateY(-3px);
+        box-shadow: 0 10px 24px rgba(79,70,229,.35);
+    }
+
+    .link-muted {
+        color: var(--muted);
+        text-decoration:none;
+    }
+    .link-muted:hover {
+        color: var(--brand);
+    }
+
 </style>
 @endpush
 
 @section('title','Login')
 
 @section('content')
-  {{-- Top hero --}}
-  <section class="auth-hero py-5">
-    <div class="container py-lg-4">
-      <div class="row justify-content-center">
-        <div class="col-lg-7 text-center">
-          <div class="d-inline-flex align-items-center gap-3 mb-3">
-            <div class="brand-badge">
-              <i class="bi bi-grid-3x3-gap-fill"></i>
-            </div>
-            <div class="text-start">
-              <h1 class="h3 mb-0" style="color:var(--ink); font-weight:800; letter-spacing:-.01em;">
-                Welcome back
-              </h1>
-              <div class="small small-muted">Sign in to manage your exam seating</div>
-            </div>
-          </div>
-        </div>
-      </div>
 
-      {{-- Card --}}
-      <div class="row justify-content-center mt-2">
-        <div class="col-md-10 col-lg-6">
-          <div class="auth-card p-4 p-lg-5">
-            {{-- Session status (like Breeze’s <x-auth-session-status/>) --}}
-            @if (session('status'))
-              <div class="alert alert-info mb-4" role="alert">
-                {{ session('status') }}
-              </div>
-            @endif
+    {{-- Animated Background Shapes --}}
+    <div class="float-circle c1"></div>
+    <div class="float-circle c2"></div>
 
-            {{-- Login form (same method/route/field names) --}}
-            <form method="POST" action="{{ route('login') }}" novalidate>
-              @csrf
+    <div class="container d-flex justify-content-center align-items-center" style="min-height:85vh;">
+        <div class="col-md-8 col-lg-5">
 
-              {{-- Email --}}
-              <div class="mb-3">
-                <label for="email" class="form-label">Email</label>
-                <input
-                  id="email"
-                  type="email"
-                  name="email"
-                  value="{{ old('email') }}"
-                  class="form-control @error('email') is-invalid @enderror"
-                  required
-                  autofocus
-                  autocomplete="username">
-                @error('email')
-                  <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-              </div>
+            <div class="auth-card">
 
-              {{-- Password --}}
-              <div class="mb-3">
-                <div class="d-flex justify-content-between">
-                  <label for="password" class="form-label mb-0">Password</label>
-                  @if (Route::has('password.request'))
-                  
-                  @endif
+                {{-- Logo --}}
+                <div class="brand-icon">
+                    <i class="bi bi-shield-lock-fill"></i>
                 </div>
-                <input
-                  id="password"
-                  type="password"
-                  name="password"
-                  class="form-control @error('password') is-invalid @enderror"
-                  required
-                  autocomplete="current-password">
-                @error('password')
-                  <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-              </div>
 
-              {{-- Remember me --}}
-              <div class="form-check mb-4">
-                <input class="form-check-input" type="checkbox" name="remember" id="remember_me">
-                <label class="form-check-label" for="remember_me">Remember me</label>
-              </div>
+                <h1 class="title">Welcome Back</h1>
+                <p class="subtitle">Sign in to access your dashboard</p>
 
-              {{-- Actions --}}
-              <div class="d-grid gap-2 d-sm-flex justify-content-sm-end align-items-center">
-                <a href="{{ route('register') }}" class="btn btn-outline-secondary d-none d-sm-inline-block">
-                  Create account
-                </a>
-                <button type="submit" class="btn btn-brand">
-                  <i class="bi bi-box-arrow-in-right me-1"></i> Log in
-                </button>
-              </div>
+                @if (session('status'))
+                    <div class="alert alert-info mt-3">{{ session('status') }}</div>
+                @endif
 
-              {{-- Helper note --}}
-              <div class="small small-muted mt-3">
-                Tip: for local testing you can use
-                <code>admin@example.com</code> / <code>password</code> or
-                <code>staff@example.com</code> / <code>password</code>
-                (if you created those users).
-              </div>
-            </form>
-          </div>
+                <form method="POST" action="{{ route('login') }}" class="mt-4">
+                    @csrf
 
-          {{-- Footer link for mobile --}}
-          <div class="text-center mt-3 d-sm-none">
-            <a href="{{ route('register') }}" class="text-decoration-none link-muted">Create account</a>
-          </div>
+                    {{-- Email --}}
+                    <div class="mb-3">
+                        <label class="form-label">Email Address</label>
+                        <input id="email" type="email" name="email"
+                               class="form-control @error('email') is-invalid @enderror"
+                               value="{{ old('email') }}" required autofocus>
+                        @error('email')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    {{-- Password --}}
+                    <div class="mb-3">
+                        <label class="form-label">Password</label>
+                        <input id="password" type="password"
+                               class="form-control @error('password') is-invalid @enderror"
+                               name="password" required>
+                        @error('password')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    {{-- Remember Me --}}
+                    <div class="form-check mb-4">
+                        <input type="checkbox" id="remember" name="remember" class="form-check-input">
+                        <label class="form-check-label" for="remember">Remember me</label>
+                    </div>
+
+                    {{-- Actions --}}
+                    <button type="submit" class="btn btn-brand w-100">
+                        <i class="bi bi-box-arrow-in-right me-1"></i> Login
+                    </button>
+
+                </form>
+
+            </div>
+
         </div>
-      </div>
     </div>
-  </section>
+
 @endsection
