@@ -47,6 +47,7 @@ Route::middleware('auth')->group(function () {
 | Admin
 |--------------------------------------------------------------------------
 */
+
 Route::middleware(['auth', 'role:admin'])
     ->prefix('admin')->as('admin.')
     ->group(function () {
@@ -55,6 +56,9 @@ Route::middleware(['auth', 'role:admin'])
 
         Route::get('/export-plan-pdf', [DashboardController::class, 'exportPlanPdf'])
             ->name('export.pdf');
+
+        Route::post('/generate-random-plan', [DashboardController::class, 'generateRandomPlan'])
+            ->name('generate.random');
 
         // Students
         Route::post('/students', [DashboardController::class, 'studentsStore'])->name('students.store');
@@ -70,6 +74,7 @@ Route::middleware(['auth', 'role:admin'])
         Route::put('/rooms/{room}', [DashboardController::class, 'roomsUpdate'])->name('rooms.update');
         Route::delete('/rooms/{room}', [DashboardController::class, 'roomsDestroy'])->name('rooms.destroy');
     });
+
 
 /*
 |--------------------------------------------------------------------------

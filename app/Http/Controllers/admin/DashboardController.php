@@ -21,12 +21,14 @@ class DashboardController extends Controller
         ]);
     }
 
-    // ===========================
-    // 🚀 EXPORT SEATING PLAN PDF
-    // ===========================
+    // =======================================================
+    //  EXPORT CURRENT PLAN (No random)
+    // =======================================================
     public function exportPlanPdf()
     {
-        $students = Student::with(['department', 'room'])->orderBy('department_id')->get();
+        $students = Student::with(['department', 'room'])
+                    ->orderBy('created_at', 'asc')
+                    ->get();
 
         $pdf = Pdf::loadView('admin.export.plan_pdf', compact('students'))
                   ->setPaper('A4', 'landscape');
@@ -34,9 +36,40 @@ class DashboardController extends Controller
         return $pdf->download('Exam_Seating_Plan.pdf');
     }
 
-    // ===========================
-    // 🚀 STUDENTS
-    // ===========================
+    // =======================================================
+    //  GENERATE RANDOM PLAN (Shuffle Students)
+    // =======================================================
+    
+public function generateRandomPlan()
+{
+    // Get all students in REAL random order
+    $students = Student::inRandomOrder()->get();
+
+    // Get all rooms with their capacities
+    $rooms = Room::withCount('students')->get();
+
+    // Clear all previous room assignments
+    Student::query()->update(['room_id' => null]);
+
+    foreach ($rooms as $room) {
+        $capacity = $room->capacity;
+
+        // Take "capacity" number of students from random list
+        $assigned = $students->splice(0, $capacity);
+
+        foreach ($assigned as $s) {
+            $s->room_id = $room->id;
+            $s->save();
+        }
+    }
+
+    return back()->with('ok', 'Random seating plan generated successfully!');
+}
+
+
+    // =======================================================
+    // STUDENTS CRUD
+    // =======================================================
     public function studentsStore(Request $request)
     {
         $data = $request->validate([
@@ -51,7 +84,7 @@ class DashboardController extends Controller
             $room = Room::withCount('students')->find($data['room_id']);
 
             if ($room->students_count >= $room->capacity) {
-                return back()->with('error', "Room {$room->room_no} is full. Cannot add student.");
+                return back()->with('error', "Room {$room->room_no} is full.");
             }
         }
 
@@ -73,7 +106,7 @@ class DashboardController extends Controller
             $room = Room::withCount('students')->find($data['room_id']);
 
             if ($room->students_count >= $room->capacity) {
-                return back()->with('error', "Room {$room->room_no} is full. Cannot reassign student.");
+                return back()->with('error', "Room {$room->room_no} is full.");
             }
         }
 
@@ -87,9 +120,9 @@ class DashboardController extends Controller
         return back()->with('ok','Student deleted.');
     }
 
-    // ===========================
-    // 🚀 DEPARTMENTS
-    // ===========================
+    // =======================================================
+    // DEPARTMENTS
+    // =======================================================
     public function departmentsStore(Request $request)
     {
         $data = $request->validate([
@@ -106,9 +139,10 @@ class DashboardController extends Controller
         return back()->with('ok','Department deleted.');
     }
 
-    // ===========================
-    // 🚀 ROOMS
-    // ===========================
+
+    // =======================================================
+    // ROOMS
+    // =======================================================
     public function roomsStore(Request $request)
     {
         $data = $request->validate([

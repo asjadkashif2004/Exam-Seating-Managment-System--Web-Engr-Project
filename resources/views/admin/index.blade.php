@@ -5,97 +5,103 @@
 @push('head')
 <style>
 
-/* PAGE BACKGROUND */
 body {
-    background: #f5f7fb;
+    background: linear-gradient(to bottom right, #e8eefc, #f9fbff);
 }
 
-/* Page Title */
+/* ======= GLOBAL UI ENHANCEMENTS ======= */
+
 .page-title {
     font-weight: 800;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.03em;
+    font-size: 32px;
     color: #0f172a;
 }
 
-/* Premium Card Look */
-.card {
-    border: none;
-    border-radius: 16px;
-    background: #ffffffd9;
-    backdrop-filter: blur(8px);
-    box-shadow: 0 8px 28px rgba(0,0,0,0.08);
-    transition: all 0.25s ease;
-}
-.card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 32px rgba(0,0,0,0.14);
+/* Spacing between big sections */
+.section-block {
+    margin-top: 35px;
 }
 
-/* Soft Badge */
-.badge-soft {
-    background: #dbeafe;
-    color: #1e40af;
-    padding: 6px 14px;
-    border-radius: 16px;
-    font-weight: 600;
+/* Premium Card */
+.card {
+    border: none;
+    border-radius: 18px;
+    background: rgba(255,255,255,0.75);
+    backdrop-filter: blur(12px);
+    padding: 18px 20px !important;
+    box-shadow: 0 10px 35px rgba(0,0,0,0.08);
+    transition: .25s ease;
+}
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 38px rgba(0,0,0,0.12);
+}
+
+/* Modern form spacing */
+.form-control, .form-select {
+    height: 44px;
+    border-radius: 10px;
 }
 
 /* Buttons */
 .btn-wow {
-    transition: 0.2s ease-in-out;
     border-radius: 10px;
-    padding: 8px 18px;
+    padding: 10px 20px;
     font-weight: 600;
+    transition: .22s ease;
 }
 .btn-wow:hover {
     transform: translateY(-3px);
-    box-shadow: 0 8px 24px rgba(37, 99, 235, 0.4);
+    box-shadow: 0 8px 28px rgba(37, 99, 235, 0.3);
 }
 
-/* Stylish Table */
+/* Table */
 .stylish-table thead th {
-    background: #eef3fa;
+    background: #e6edff;
     font-weight: 700;
-    color: #1e293b;
-    border-bottom: 2px solid #e3e8ef;
-    padding: 12px;
+    padding: 14px;
 }
 
 .stylish-table tbody tr {
-    background: #ffffffc0;
-    transition: 0.18s ease-in-out;
+    background: #ffffffd6;
+    transition: .18s ease;
 }
 .stylish-table tbody tr:hover {
-    background: #f0f4ff !important;
+    background: #eef3ff !important;
     transform: scale(1.005);
 }
 
 /* Action Buttons */
 .action-btn {
-    width: 36px; height: 36px;
-    display: flex; align-items: center; justify-content: center;
-    border-radius: 10px;
-    background: #ffffff;
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
     transition: .2s;
 }
 .action-btn:hover {
-    background: #e8f0ff;
+    background: #e6ecff;
     transform: translateY(-2px);
 }
 
 /* Inline Edit Row */
 .inline-edit-row {
-    background: #f8faff !important;
+    background: #f3f7ff !important;
     border-left: 4px solid #3b82f6;
-    animation: fadeIn .3s ease;
+    animation: fadeIn .35s ease;
 }
 
 /* Fade Animation */
 .fade-in {
     animation: fadeIn .45s ease-in-out;
 }
+
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(8px); }
+    from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
@@ -111,9 +117,10 @@ body {
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
             <h1 class="page-title mb-1">Admin Dashboard</h1>
-            <div class="small text-muted">Manage Departments, Rooms & Students efficiently.</div>
+            <div class="small text-muted">Effortlessly manage Departments, Rooms, and Students.</div>
         </div>
-        <span class="badge badge-soft">Role: Admin</span>
+
+        <span class="badge bg-primary-subtle text-primary px-3 py-2 rounded-pill fw-semibold">Admin</span>
     </div>
 
 
@@ -126,122 +133,221 @@ body {
     @endif
 
 
-
     <div class="row g-4">
 
-        {{-- ADD DEPARTMENT --}}
+        {{-- =========================
+            COLUMN 1: DEPARTMENTS
+        ========================== --}}
         <div class="col-lg-4">
             <div class="card h-100">
-                <div class="card-body">
-                    <h5><i class="bi bi-building-add text-primary me-1"></i> Add Department</h5>
 
-                    <form class="form-mini mt-2" method="POST" action="{{ route('admin.departments.store') }}">
-                        @csrf
-                        <input class="form-control mb-2" name="name" placeholder="Department Name" required>
+                <h5 class="fw-bold mb-3"><i class="bi bi-building text-primary me-1"></i> Departments</h5>
 
-                        <button class="btn btn-primary btn-wow w-100">Add</button>
-                    </form>
+                {{-- ADD FORM --}}
+                <form method="POST" action="{{ route('admin.departments.store') }}">
+                    @csrf
+                    <input class="form-control mb-2" name="name" placeholder="Department Name" required>
+                    <button class="btn btn-primary btn-wow w-100">Add Department</button>
+                </form>
 
-                    <hr>
+                <hr>
 
-                    <div class="small text-muted">Departments</div>
-                    <ul class="list-group mt-2">
-                        @forelse ($departments as $dept)
-                            <li class="list-group-item d-flex justify-content-between">
-                                {{ $dept->name }}
-                                <form method="POST" action="{{ route('admin.departments.destroy', $dept) }}">
-                                    @csrf @method('DELETE')
-                                    <button class="btn btn-sm btn-outline-danger">Delete</button>
-                                </form>
-                            </li>
-                        @empty
-                            <li class="list-group-item">No departments yet</li>
-                        @endforelse
-                    </ul>
+                {{-- LIST --}}
+                <ul class="list-group mt-2">
+                    @forelse ($departments as $dept)
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            {{ $dept->name }}
 
-                </div>
+                            <form method="POST" action="{{ route('admin.departments.destroy', $dept) }}">
+                                @csrf @method('DELETE')
+                                <button class="btn btn-sm btn-outline-danger">Delete</button>
+                            </form>
+                        </li>
+                    @empty
+                        <li class="list-group-item">No departments yet</li>
+                    @endforelse
+                </ul>
+
             </div>
         </div>
 
 
-        {{-- ADD ROOM --}}
+
+        {{-- =========================
+            COLUMN 2: ROOMS
+        ========================== --}}
         <div class="col-lg-4">
             <div class="card h-100">
-                <div class="card-body">
-                    <h5><i class="bi bi-door-open text-primary me-1"></i> Add Room</h5>
 
-                    <form class="form-mini mt-2" method="POST" action="{{ route('admin.rooms.store') }}">
-                        @csrf
+                <h5 class="fw-bold mb-3"><i class="bi bi-door-open text-primary me-1"></i> Rooms</h5>
 
-                        <select class="form-select mb-2" name="department_id" required>
-                            <option hidden>Select Department</option>
-                            @foreach ($departments as $d)
-                                <option value="{{ $d->id }}">{{ $d->name }}</option>
-                            @endforeach
-                        </select>
+                {{-- ADD FORM --}}
+                <form method="POST" action="{{ route('admin.rooms.store') }}">
+                    @csrf
 
-                        <input class="form-control mb-2" name="room_no" placeholder="Room No" required>
-                        <input class="form-control mb-2" type="number" name="capacity" placeholder="Capacity" required>
-                        <input class="form-control mb-2" name="invigilator" placeholder="Invigilator (optional)">
+                    <select class="form-select mb-2" name="department_id" required>
+                        <option hidden>Select Department</option>
+                        @foreach ($departments as $d)
+                            <option value="{{ $d->id }}">{{ $d->name }}</option>
+                        @endforeach
+                    </select>
 
-                        <button class="btn btn-primary btn-wow w-100">Add</button>
-                    </form>
+                    <input class="form-control mb-2" name="room_no" placeholder="Room No" required>
+                    <input class="form-control mb-2" type="number" name="capacity" placeholder="Capacity" required>
+                    <input class="form-control mb-2" name="invigilator" placeholder="Invigilator (optional)">
 
-                </div>
-            </div>
-        </div>
+                    <button class="btn btn-primary btn-wow w-100">Add Room</button>
+                </form>
 
+                <hr>
 
-        {{-- ADD STUDENT --}}
-        <div class="col-lg-4">
-            <div class="card h-100">
-                <div class="card-body">
+                <h6 class="text-muted">Manage Rooms</h6>
 
-                    <h5><i class="bi bi-person-plus text-primary me-1"></i> Add Student</h5>
+                <div class="table-responsive" style="max-height: 300px; overflow-y:auto;">
+                    <table class="table table-sm stylish-table align-middle">
 
-                    <form class="form-mini mt-2" method="POST" action="{{ route('admin.students.store') }}">
-                        @csrf
-                        <input class="form-control mb-2" name="name" placeholder="Student Name" required>
-                        <input class="form-control mb-2" name="cmd_id" placeholder="CMD ID" required>
+                        <thead>
+                            <tr>
+                                <th>Room</th>
+                                <th>Dept</th>
+                                <th>Cap</th>
+                                <th>Invigilator</th>
+                                <th>Edit</th>
+                            </tr>
+                        </thead>
 
-                        <select class="form-select mb-2" name="department_id" required>
-                            <option hidden>Department</option>
-                            @foreach ($departments as $d)
-                                <option value="{{ $d->id }}">{{ $d->name }}</option>
-                            @endforeach
-                        </select>
-
-                        <input class="form-control mb-2" type="number" name="semester" min="1" max="8" placeholder="Semester">
-
-                        <select class="form-select mb-2" name="room_id">
-                            <option value="">Room (optional)</option>
+                        <tbody>
                             @foreach ($rooms as $r)
-                                <option value="{{ $r->id }}">{{ $r->room_no }}</option>
+                                {{-- Normal Row --}}
+                                <tr>
+                                    <td>{{ $r->room_no }}</td>
+                                    <td>{{ $r->department->name }}</td>
+                                    <td>{{ $r->capacity }}</td>
+                                    <td>{{ $r->invigilator ?? '-' }}</td>
+
+                                    <td>
+                                        <button class="btn btn-sm action-btn"
+                                            data-bs-toggle="collapse"
+                                            data-bs-target="#editRoom{{ $r->id }}">
+                                            <i class="bi bi-pencil text-primary"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+
+                                {{-- Inline Edit --}}
+                                <tr id="editRoom{{ $r->id }}" class="collapse inline-edit-row">
+                                    <td colspan="5">
+                                        <form method="POST" action="{{ route('admin.rooms.update', $r) }}"
+                                              class="row g-2 p-3 small">
+                                            @csrf @method('PUT')
+
+                                            <div class="col-md-3">
+                                                <label class="small fw-bold">Room No</label>
+                                                <input class="form-control form-control-sm" name="room_no" value="{{ $r->room_no }}">
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <label class="small fw-bold">Capacity</label>
+                                                <input class="form-control form-control-sm" type="number" name="capacity"
+                                                        value="{{ $r->capacity }}">
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <label class="small fw-bold">Invigilator</label>
+                                                <input class="form-control form-control-sm" name="invigilator"
+                                                        value="{{ $r->invigilator }}">
+                                            </div>
+
+                                            <div class="col-md-3 d-flex align-items-end gap-2">
+
+                                                <button class="btn btn-primary btn-sm">Save</button>
+
+                                                <button type="button" class="btn btn-secondary btn-sm"
+                                                        data-bs-toggle="collapse"
+                                                        data-bs-target="#editRoom{{ $r->id }}">
+                                                    Cancel
+                                                </button>
+
+                                                {{-- DELETE --}}
+                                                <form method="POST" action="{{ route('admin.rooms.destroy', $r) }}"
+                                                      onsubmit="return confirm('Delete room?')">
+                                                    @csrf @method('DELETE')
+                                                    <button class="btn btn-danger btn-sm">Delete</button>
+                                                </form>
+                                            </div>
+
+                                        </form>
+                                    </td>
+                                </tr>
+
                             @endforeach
-                        </select>
-
-                        <button class="btn btn-primary btn-wow w-100">Add Student</button>
-                    </form>
-
+                        </tbody>
+                    </table>
                 </div>
+
             </div>
         </div>
 
-    </div>
+
+
+        {{-- =========================
+            COLUMN 3: ADD STUDENTS
+        ========================== --}}
+        <div class="col-lg-4">
+            <div class="card h-100">
+
+                <h5 class="fw-bold mb-3"><i class="bi bi-person-plus text-primary me-1"></i> Add Student</h5>
+
+                <form method="POST" action="{{ route('admin.students.store') }}">
+                    @csrf
+                    <input class="form-control mb-2" name="name" placeholder="Student Name" required>
+                    <input class="form-control mb-2" name="cmd_id" placeholder="CMD ID" required>
+
+                    <select class="form-select mb-2" name="department_id" required>
+                        <option hidden>Department</option>
+                        @foreach ($departments as $d)
+                            <option value="{{ $d->id }}">{{ $d->name }}</option>
+                        @endforeach
+                    </select>
+
+                    <input class="form-control mb-2" type="number" name="semester" min="1" max="8" placeholder="Semester">
+
+                    <select class="form-select mb-2" name="room_id">
+                        <option value="">Room (optional)</option>
+                        @foreach ($rooms as $r)
+                            <option value="{{ $r->id }}">{{ $r->room_no }}</option>
+                        @endforeach
+                    </select>
+
+                    <button class="btn btn-primary btn-wow w-100">Add Student</button>
+                </form>
+
+            </div>
+        </div>
+
+    </div> {{-- END ROW --}}
 
 
 
-    {{-- STUDENTS TABLE --}}
-    <div class="card mt-4">
+    {{-- =========================
+        STUDENTS TABLE
+    ========================== --}}
+    <div class="card section-block fade-in">
         <div class="card-body">
 
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <h5 class="mb-0">Students</h5>
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h4 class="fw-bold">Students</h4>
 
                 <div class="d-flex align-items-center gap-3">
                     <span class="small text-muted">Total: {{ $students->total() }}</span>
 
-                    {{-- EXPORT PDF BUTTON --}}
+                    <form action="{{ route('admin.generate.random') }}" method="POST">
+                        @csrf
+                        <button class="btn btn-warning btn-wow">
+                            <i class="bi bi-shuffle me-1"></i> Generate Random Plan
+                        </button>
+                    </form>
+
                     <a href="{{ route('admin.export.pdf') }}" class="btn btn-danger btn-wow">
                         <i class="bi bi-filetype-pdf me-1"></i> Export Seating Plan PDF
                     </a>
@@ -259,7 +365,7 @@ body {
                             <th>Sem</th>
                             <th>Room</th>
                             <th>Invigilator</th>
-                            <th class="text-center" width="90">Actions</th>
+                            <th width="70">Actions</th>
                         </tr>
                     </thead>
 
@@ -267,112 +373,101 @@ body {
 
                         @foreach ($students as $s)
 
-                            {{-- NORMAL ROW --}}
-                            <tr>
-                                <td class="fw-semibold">{{ $s->name }}</td>
+                        <tr>
+                            <td class="fw-semibold">{{ $s->name }}</td>
 
-                                <td>
-                                    <span class="badge bg-light text-dark px-2 py-1 rounded-pill">
-                                        {{ $s->cmd_id }}
-                                    </span>
-                                </td>
+                            <td>
+                                <span class="badge bg-light text-dark px-2 py-1 rounded-pill">
+                                    {{ $s->cmd_id }}
+                                </span>
+                            </td>
 
-                                <td>{{ $s->department->name ?? '-' }}</td>
-                                <td>{{ $s->semester }}</td>
-                                <td>{{ $s->room->room_no ?? '-' }}</td>
-                                <td>{{ $s->room->invigilator ?? '-' }}</td>
+                            <td>{{ $s->department->name ?? '-' }}</td>
+                            <td>{{ $s->semester }}</td>
+                            <td>{{ $s->room->room_no ?? '-' }}</td>
+                            <td>{{ $s->room->invigilator ?? '-' }}</td>
 
-                                <td class="text-center">
-                                    <div class="d-flex justify-content-center gap-2">
+                            <td>
+                                <button class="btn btn-sm action-btn"
+                                        data-bs-toggle="collapse"
+                                        data-bs-target="#editStudent{{ $s->id }}">
+                                    <i class="bi bi-pencil text-primary"></i>
+                                </button>
+                            </td>
+                        </tr>
 
-                                        {{-- EDIT COLLAPSE BUTTON --}}
-                                        <button class="btn btn-sm action-btn"
+                        {{-- Inline Edit --}}
+                        <tr id="editStudent{{ $s->id }}" class="collapse inline-edit-row">
+                            <td colspan="7">
+                                <form method="POST"
+                                      action="{{ route('admin.students.update', $s) }}"
+                                      class="row g-3 p-3 small">
+                                    @csrf
+                                    @method('PUT')
+
+                                    <div class="col-md-3">
+                                        <label class="small fw-bold">Name</label>
+                                        <input name="name" value="{{ $s->name }}" class="form-control form-control-sm">
+                                    </div>
+
+                                    <div class="col-md-2">
+                                        <label class="small fw-bold">CMD ID</label>
+                                        <input name="cmd_id" value="{{ $s->cmd_id }}" class="form-control form-control-sm">
+                                    </div>
+
+                                    <div class="col-md-2">
+                                        <label class="small fw-bold">Department</label>
+                                        <select name="department_id" class="form-select form-select-sm">
+                                            @foreach ($departments as $d)
+                                                <option value="{{ $d->id }}" @selected($s->department_id == $d->id)>
+                                                    {{ $d->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-1">
+                                        <label class="small fw-bold">Sem</label>
+                                        <input type="number" name="semester" min="1" max="8"
+                                               class="form-control form-control-sm"
+                                               value="{{ $s->semester }}">
+                                    </div>
+
+                                    <div class="col-md-2">
+                                        <label class="small fw-bold">Room</label>
+                                        <select name="room_id" class="form-select form-select-sm">
+                                            <option value="">None</option>
+                                            @foreach ($rooms as $r)
+                                                <option value="{{ $r->id }}" @selected($s->room_id == $r->id)>
+                                                    {{ $r->room_no }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-2 d-flex align-items-end gap-2">
+
+                                        <button class="btn btn-primary btn-sm">Save</button>
+
+                                        <button type="button" class="btn btn-secondary btn-sm"
                                                 data-bs-toggle="collapse"
-                                                data-bs-target="#editRow{{ $s->id }}">
-                                            <i class="bi bi-pencil text-primary"></i>
+                                                data-bs-target="#editStudent{{ $s->id }}">
+                                            Cancel
                                         </button>
 
                                         {{-- DELETE --}}
-                                        <form method="POST" action="{{ route('admin.students.destroy', $s) }}"
+                                        <form method="POST"
+                                              action="{{ route('admin.students.destroy', $s) }}"
                                               onsubmit="return confirm('Delete student?')">
                                             @csrf @method('DELETE')
-                                            <button class="btn btn-sm action-btn">
-                                                <i class="bi bi-trash text-danger"></i>
-                                            </button>
+                                            <button class="btn btn-danger btn-sm">Delete</button>
                                         </form>
 
                                     </div>
-                                </td>
-                            </tr>
 
-
-                            {{-- INLINE EDIT ROW --}}
-                            <tr id="editRow{{ $s->id }}" class="collapse inline-edit-row">
-                                <td colspan="7">
-
-                                    <form method="POST" action="{{ route('admin.students.update', $s) }}"
-                                          class="row g-2 p-3">
-                                        @csrf @method('PUT')
-
-                                        <div class="col-md-3">
-                                            <label class="small fw-bold">Name</label>
-                                            <input name="name" value="{{ $s->name }}"
-                                                   class="form-control form-control-sm">
-                                        </div>
-
-                                        <div class="col-md-2">
-                                            <label class="small fw-bold">CMD ID</label>
-                                            <input name="cmd_id" value="{{ $s->cmd_id }}"
-                                                   class="form-control form-control-sm">
-                                        </div>
-
-                                        <div class="col-md-2">
-                                            <label class="small fw-bold">Department</label>
-                                            <select name="department_id" class="form-select form-select-sm">
-                                                @foreach ($departments as $d)
-                                                    <option value="{{ $d->id }}"
-                                                        @selected($s->department_id == $d->id)>
-                                                        {{ $d->name }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-
-                                        <div class="col-md-1">
-                                            <label class="small fw-bold">Sem</label>
-                                            <input type="number" name="semester" min="1" max="8"
-                                                   value="{{ $s->semester }}"
-                                                   class="form-control form-control-sm">
-                                        </div>
-
-                                        <div class="col-md-2">
-                                            <label class="small fw-bold">Room</label>
-                                            <select name="room_id" class="form-select form-select-sm">
-                                                <option value="">None</option>
-                                                @foreach ($rooms as $r)
-                                                    <option value="{{ $r->id }}"
-                                                        @selected($s->room_id == $r->id)>
-                                                        {{ $r->room_no }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-
-                                        <div class="col-md-2 d-flex align-items-end justify-content-end gap-2">
-                                            <button class="btn btn-primary btn-sm">Save</button>
-
-                                            <button type="button"
-                                                    class="btn btn-secondary btn-sm"
-                                                    data-bs-toggle="collapse"
-                                                    data-bs-target="#editRow{{ $s->id }}">
-                                                Cancel
-                                            </button>
-                                        </div>
-
-                                    </form>
-
-                                </td>
-                            </tr>
+                                </form>
+                            </td>
+                        </tr>
 
                         @endforeach
 
@@ -381,7 +476,7 @@ body {
                 </table>
             </div>
 
-            <div class="mt-3">
+            <div class="mt-4">
                 {{ $students->links() }}
             </div>
 

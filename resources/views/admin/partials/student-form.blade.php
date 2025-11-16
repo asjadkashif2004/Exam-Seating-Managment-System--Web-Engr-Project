@@ -2,98 +2,120 @@
   $val = fn($k,$d='') => old($k, $student->$k ?? $d);
 @endphp
 
+@push('head')
 <style>
-  .form-label {
-      font-weight: 600;
-      color: #1e293b;
-      margin-bottom: 6px;
-  }
-  .form-control, .form-select {
-      height: 48px;
-      border-radius: 10px;
-      border: 1px solid #e2e8f0;
-      transition: 0.2s;
-      background: #ffffff;
-  }
-  .form-control:focus,
-  .form-select:focus {
-      border-color: #3b82f6;
-      box-shadow: 0 0 0 3px #93c5fd66;
-  }
-  .form-box {
-      padding: 18px;
-      background: #ffffffcc;
-      backdrop-filter: blur(10px);
-      border-radius: 16px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.06);
-      transition: all .25s ease;
-  }
-  .form-box:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 12px 28px rgba(0,0,0,0.1);
-  }
-</style>
 
-<div class="form-box mt-3">
+/* FORM CONTAINER */
+.student-form-box {
+    padding: 24px;
+    background: rgba(255,255,255,0.78);
+    backdrop-filter: blur(12px);
+    border-radius: 18px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+    animation: fadeSlide .45s ease;
+    transition: .25s ease;
+}
+.student-form-box:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 38px rgba(0,0,0,0.12);
+}
+
+/* LABEL */
+.form-label {
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 6px;
+    font-size: 14px;
+}
+
+/* INPUTS */
+.form-control, .form-select {
+    height: 48px;
+    border-radius: 12px;
+    border: 1px solid #d4dbe6;
+    padding-left: 14px;
+    transition: .25s ease;
+    background: #ffffffcc;
+}
+.form-control:focus, .form-select:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 4px rgba(59,130,246,.25);
+}
+
+/* HOVER EFFECT */
+.form-control:hover,
+.form-select:hover {
+    border-color: #93c5fd;
+}
+
+/* ANIMATION */
+@keyframes fadeSlide {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+</style>
+@endpush
+
+
+
+<div class="student-form-box">
 
     <div class="row g-3">
 
-        {{-- Name --}}
+        {{-- NAME --}}
         <div class="col-md-6">
             <label class="form-label">Student Name</label>
-            <input name="name" 
-                   class="form-control" 
-                   value="{{ $val('name') }}" 
-                   placeholder="Enter full name" 
+            <input name="name"
+                   value="{{ $val('name') }}"
+                   class="form-control"
+                   placeholder="Enter full name"
                    required>
         </div>
 
         {{-- CMD ID --}}
         <div class="col-md-6">
             <label class="form-label">CMD ID / Roll No.</label>
-            <input name="cmd_id" 
-                   class="form-control" 
-                   value="{{ $val('cmd_id') }}" 
-                   placeholder="e.g. CMD12345"
+            <input name="cmd_id"
+                   value="{{ $val('cmd_id') }}"
+                   class="form-control"
+                   placeholder="e.g., CMD12345"
                    required>
         </div>
 
-        {{-- Department --}}
+        {{-- DEPARTMENT --}}
         <div class="col-md-6">
             <label class="form-label">Department</label>
             <select name="department_id" class="form-select" required>
-                <option value="">Select a Department</option>
+                <option value="">Select Department</option>
                 @foreach($departments as $d)
-                  <option value="{{ $d->id }}" 
-                          @selected($val('department_id')==$d->id)>
-                      {{ $d->name }}
-                  </option>
+                    <option value="{{ $d->id }}" @selected($val('department_id')==$d->id)>
+                        {{ $d->name }}
+                    </option>
                 @endforeach
             </select>
         </div>
 
-        {{-- Semester --}}
+        {{-- SEMESTER --}}
         <div class="col-md-3">
             <label class="form-label">Semester</label>
-            <input type="number" 
-                   min="1" 
-                   max="8" 
-                   name="semester" 
-                   class="form-control" 
-                   value="{{ $val('semester',1) }}" 
+            <input type="number"
+                   min="1" max="8"
+                   name="semester"
+                   value="{{ $val('semester',1) }}"
+                   class="form-control"
                    required>
         </div>
 
-        {{-- Room --}}
+        {{-- ROOM --}}
         <div class="col-md-3">
             <label class="form-label">Room</label>
             <select name="room_id" class="form-select">
                 <option value="">Not Assigned</option>
                 @foreach($rooms as $r)
-                  <option value="{{ $r->id }}" 
-                          @selected($val('room_id')==$r->id)>
-                      {{ $r->number }}
-                  </option>
+                    <option value="{{ $r->id }}" @selected($val('room_id')==$r->id)>
+                        {{ $r->room_no ?? $r->number }}
+                    </option>
                 @endforeach
             </select>
         </div>
