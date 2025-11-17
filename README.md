@@ -213,19 +213,6 @@ php artisan serve
 
 ---
 
-# 📚 **API Endpoints (Optional)**
-
-> *Use only if you plan to expose APIs later*
-
-| Method | Endpoint             | Description         |
-| ------ | -------------------- | ------------------- |
-| GET    | `/api/students`      | List students       |
-| POST   | `/api/students`      | Add student         |
-| GET    | `/api/rooms`         | List rooms          |
-| POST   | `/api/generate-plan` | Create seating plan |
-
----
-
 # 📊 Dashboard Stats
 
 Live dashboard displays:
