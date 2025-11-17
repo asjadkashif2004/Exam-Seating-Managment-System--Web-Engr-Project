@@ -17,19 +17,48 @@
 
 ---
 
-## 🌐 **Live Demo (Optional)**
-
-➡️ *Add your deployed link here*
-
-```
-https://yourdomain.com
-```
-
 ---
 
 # 🎥 **Preview**
 
-> *Replace with real GIF or screenshots later*
+
+<img width="1300" height="636" alt="image" src="https://github.com/user-attachments/assets/f67a6e47-cc32-406b-a177-03d7ee15609e" />
+<img width="1334" height="562" alt="image" src="https://github.com/user-attachments/assets/45ce27af-1c3e-48da-a1db-7cec326fe0d6" />
+
+<p><em><strong> Login Page</strong> </em></p>
+<img width="1282" height="619" alt="image" src="https://github.com/user-attachments/assets/7008a476-ea1b-4b95-b906-6898e05e1e05" />
+<p><em><strong> Admin Dashboard</strong> </em></p>
+
+<img width="1322" height="635" alt="image" src="https://github.com/user-attachments/assets/5cb93bcd-8a6f-4ac5-8764-594e976a0632" />
+
+
+<img width="1240" height="479" alt="image" src="https://github.com/user-attachments/assets/3c0fe4c5-5125-43ab-8267-accf098a4219" />
+
+
+<p><em><strong> Faculty/Staff Dashboard</strong> </em></p>
+
+<img width="1236" height="556" alt="image" src="https://github.com/user-attachments/assets/5ea6d7f8-67dd-4391-bdcc-64c05aaf9432" />
+<p><em><strong> Student Dashboard</strong> </em></p>
+<img width="1271" height="575" alt="image" src="https://github.com/user-attachments/assets/a228dab9-d993-49fa-89a1-210369717882" />
+<p><em><strong> Student search bar view</strong> </em></p>
+
+<img width="1280" height="465" alt="image" src="https://github.com/user-attachments/assets/852c2fff-d211-443e-b4f2-1692425050ce" />
+<p><em><strong> Backend on Mysql Xamp view</strong> </em></p>
+
+
+<img width="1338" height="397" alt="image" src="https://github.com/user-attachments/assets/597f25b6-0617-4146-ad82-8f2090d6fd09" />
+
+
+
+
+
+
+
+
+
+
+
+
 
 <p align="center">
   <img src="https://via.placeholder.com/800x420.png?text=Landing+Page+Preview" width="80%">
@@ -260,13 +289,10 @@ public/
 
 ---
 
-# 📜 License
 
-MIT License — free to use, modify, and commercialize.
-
----
 
 # ❤️ Credits
 
 Developed with passion using **Laravel**, **Bootstrap**, and **modern UI craft**.
 
+<p><em><strong> Deverloped by Asjad and Umar</em></p>
