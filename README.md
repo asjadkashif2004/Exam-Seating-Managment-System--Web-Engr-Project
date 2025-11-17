@@ -7,13 +7,7 @@
   <img src="https://img.shields.io/badge/Laravel-10.x-FF2D20?style=for-the-badge&logo=laravel&logoColor=white">
   <img src="https://img.shields.io/badge/PHP-8.1+-777BB4?style=for-the-badge&logo=php&logoColor=white">
   <img src="https://img.shields.io/badge/MySQL-8+-4479A1?style=for-the-badge&logo=mysql&logoColor=white">
-  <img src="https://img.shields.io/badge/License-MIT-00A98F?style=for-the-badge">
-</p>
-
-<p align="center">
-  <img src="https://img.shields.io/github/last-commit/your-username/exam-seating-management?style=flat-square">
-  <img src="https://img.shields.io/github/languages/top/your-username/exam-seating-management?style=flat-square">
-</p>
+  </p>
 
 ---
 
