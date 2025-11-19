@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>@yield('title', 'ESE System')</title>
+  <title>@yield('title', 'Exam Seating Management')</title>
 
   {{-- Bootstrap & Icons --}}
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -143,7 +143,7 @@
         <!-- Brand -->
         <a class="navbar-brand d-flex align-items-center gap-2" href="{{ url('/') }}">
             <i class="bi bi-grid-3x3-gap-fill fs-5 text-primary"></i>
-            <b class="brand-gradient">ESE System</b>
+            <b class="brand-gradient">Exam Seating Management</b>
         </a>
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
@@ -193,7 +193,7 @@
   {{-- Footer --}}
   <footer class="footer bg-white py-4 mt-5">
     <div class="container d-flex flex-column flex-lg-row justify-content-between align-items-center">
-      <div class="small">© {{ date('Y') }} ESE System. All rights reserved.</div>
+      <div class="small">© {{ date('Y') }} Developed by Asjad and Umar. All rights reserved.</div>
       <div class="small"><span class="badge badge-soft rounded-pill">v1.0</span></div>
     </div>
   </footer>

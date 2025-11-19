@@ -13,6 +13,7 @@ class Student extends Model
         'department_id',
         'semester',
         'room_id',
+        'seat_no',
         'invigilator_id',
     ];
 

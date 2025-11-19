@@ -5,6 +5,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Staff\StudentViewController;
 use App\Http\Controllers\Student\StudentDashboardController;
+use App\Http\Controllers\Admin\SeatingController;   
 
 
 /*

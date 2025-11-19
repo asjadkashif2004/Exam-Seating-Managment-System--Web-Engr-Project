@@ -22,7 +22,7 @@ class DashboardController extends Controller
     }
 
     // =======================================================
-    //  EXPORT CURRENT PLAN (No random)
+    // EXPORT PDF
     // =======================================================
     public function exportPlanPdf()
     {
@@ -37,38 +37,52 @@ class DashboardController extends Controller
     }
 
     // =======================================================
-    //  GENERATE RANDOM PLAN (Shuffle Students)
+    // RANDOM PLAN
     // =======================================================
-    
-public function generateRandomPlan()
-{
-    // Get all students in REAL random order
-    $students = Student::inRandomOrder()->get();
+    public function generateRandomPlan()
+    {
+        $students = Student::inRandomOrder()->get();
+        $groups = $students->groupBy('department_id')->values();
 
-    // Get all rooms with their capacities
-    $rooms = Room::withCount('students')->get();
+        $balanced = collect();
+        $max = $groups->map(fn($g) => $g->count())->max();
 
-    // Clear all previous room assignments
-    Student::query()->update(['room_id' => null]);
-
-    foreach ($rooms as $room) {
-        $capacity = $room->capacity;
-
-        // Take "capacity" number of students from random list
-        $assigned = $students->splice(0, $capacity);
-
-        foreach ($assigned as $s) {
-            $s->room_id = $room->id;
-            $s->save();
+        for ($i = 0; $i < $max; $i++) {
+            foreach ($groups as $group) {
+                if (isset($group[$i])) {
+                    $balanced->push($group[$i]);
+                }
+            }
         }
+
+        Student::query()->update([
+            'room_id' => null,
+            'seat_no' => null,
+        ]);
+
+        $rooms = Room::orderBy('room_no')->get();
+        $index = 0;
+
+        foreach ($rooms as $room) {
+            $capacity = $room->capacity;
+
+            for ($seat = 1; $seat <= $capacity; $seat++) {
+                if (!isset($balanced[$index])) break;
+
+                $student = $balanced[$index];
+                $student->room_id = $room->id;
+                $student->seat_no = $seat;
+                $student->save();
+
+                $index++;
+            }
+        }
+
+        return back()->with('ok', 'Random seating plan generated successfully.');
     }
 
-    return back()->with('ok', 'Random seating plan generated successfully!');
-}
-
-
     // =======================================================
-    // STUDENTS CRUD
+    // STUDENTS STORE
     // =======================================================
     public function studentsStore(Request $request)
     {
@@ -78,13 +92,23 @@ public function generateRandomPlan()
             'department_id' => ['required','exists:departments,id'],
             'semester'      => ['required','integer','between:1,8'],
             'room_id'       => ['nullable','exists:rooms,id'],
+            'seat_no'       => ['nullable','integer','min:1'],
         ]);
 
-        if (!empty($data['room_id'])) {
-            $room = Room::withCount('students')->find($data['room_id']);
+        if (!empty($data['room_id']) && !empty($data['seat_no'])) {
 
-            if ($room->students_count >= $room->capacity) {
-                return back()->with('error', "Room {$room->room_no} is full.");
+            $room = Room::find($data['room_id']);
+
+            if ($data['seat_no'] > $room->capacity) {
+                return back()->with('error', "Seat exceeds capacity of room {$room->room_no}.");
+            }
+
+            $exists = Student::where('room_id', $data['room_id'])
+                             ->where('seat_no', $data['seat_no'])
+                             ->exists();
+
+            if ($exists) {
+                return back()->with('error', "Seat {$data['seat_no']} already taken in room {$room->room_no}.");
             }
         }
 
@@ -92,6 +116,9 @@ public function generateRandomPlan()
         return back()->with('ok','Student added.');
     }
 
+    // =======================================================
+    // STUDENTS UPDATE
+    // =======================================================
     public function studentsUpdate(Request $request, Student $student)
     {
         $data = $request->validate([
@@ -100,24 +127,29 @@ public function generateRandomPlan()
             'department_id' => ['required','exists:departments,id'],
             'semester'      => ['required','integer','between:1,8'],
             'room_id'       => ['nullable','exists:rooms,id'],
+            'seat_no'       => ['nullable','integer','min:1'],
         ]);
 
-        if (!empty($data['room_id']) && $data['room_id'] != $student->room_id) {
-            $room = Room::withCount('students')->find($data['room_id']);
+        if (!empty($data['room_id']) && !empty($data['seat_no'])) {
 
-            if ($room->students_count >= $room->capacity) {
-                return back()->with('error', "Room {$room->room_no} is full.");
+            $room = Room::find($data['room_id']);
+
+            if ($data['seat_no'] > $room->capacity) {
+                return back()->with('error', "Seat exceeds room capacity of {$room->capacity}.");
+            }
+
+            $exists = Student::where('room_id', $data['room_id'])
+                             ->where('seat_no', $data['seat_no'])
+                             ->where('id','!=',$student->id)
+                             ->exists();
+
+            if ($exists) {
+                return back()->with('error', "Seat {$data['seat_no']} already taken in room {$room->room_no}.");
             }
         }
 
         $student->update($data);
         return back()->with('ok','Student updated.');
-    }
-
-    public function studentsDestroy(Student $student)
-    {
-        $student->delete();
-        return back()->with('ok','Student deleted.');
     }
 
     // =======================================================
@@ -138,7 +170,6 @@ public function generateRandomPlan()
         $department->delete();
         return back()->with('ok','Department deleted.');
     }
-
 
     // =======================================================
     // ROOMS
@@ -173,5 +204,14 @@ public function generateRandomPlan()
     {
         $room->delete();
         return back()->with('ok','Room deleted.');
+    }
+
+    // =======================================================
+    // STUDENTS DESTROY (DELETE)
+    // =======================================================
+    public function studentsDestroy(Student $student)
+    {
+        $student->delete();
+        return back()->with('ok', 'Student deleted successfully.');
     }
 }

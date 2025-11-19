@@ -62,7 +62,7 @@
 
         <div>
             <h3 class="mb-1">Welcome, {{ auth()->user()->name }}</h3>
-            <p class="text-muted mb-0">Browse all students or search by CMD / Roll No.</p>
+            <p class="text-muted mb-0">Browse all students or search by CMS / Roll No.</p>
         </div>
 
         {{-- Show Back Button ONLY when a search is performed --}}
@@ -95,9 +95,10 @@
                     <thead>
                         <tr>
                             <th>Name</th>
-                            <th>CMD ID</th>
+                            <th>CMS ID</th>
                             <th>Department</th>
                             <th>Room</th>
+                            <th> Seat </th>
                         </tr>
                     </thead>
 
@@ -108,6 +109,7 @@
                             <td>{{ $s->cmd_id }}</td>
                             <td>{{ $s->department->name ?? '-' }}</td>
                             <td>{{ $s->room->room_no ?? '-' }}</td>
+                            <td>{{ $s->seat_no ?? '-'}}</td>
                         </tr>
                     @endforeach
                     </tbody>
