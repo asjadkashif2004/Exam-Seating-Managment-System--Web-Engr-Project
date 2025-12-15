@@ -278,4 +278,4 @@ https://youtu.be/dX6LwemRH24
 
 Developed with passion using **Laravel**, **Bootstrap**, and **modern UI craft**.
 
-<p><em><strong> Deverloped by Asjad and Umar</em></p>
+<p><em><strong> Developed by Asjad </em></p>
